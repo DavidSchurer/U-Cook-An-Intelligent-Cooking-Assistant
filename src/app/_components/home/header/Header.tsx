@@ -2,7 +2,16 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import styles from './_Header.module.scss';
 
 export default function Header(){
-    return <></> // TODO add header
+
+    const pathname = usePathname();
+
+    return (
+        <header>
+
+        </header>
+    )
 }
