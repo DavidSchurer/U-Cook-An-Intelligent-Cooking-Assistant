@@ -7,6 +7,7 @@ export default function Home() {
             <div>
                 <h1>U-Cook</h1>
                 <p>Welcome to U-Cook!</p>
+                <p>LETS GET COOKING 🧑‍🍳</p>
             </div>
         </main>
     );
