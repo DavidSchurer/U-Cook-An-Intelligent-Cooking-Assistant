@@ -10,8 +10,10 @@ export default function Header(){
     const pathname = usePathname();
 
     return (
-        <header>
+        <header className={styles.header}>
+            <nav className={styles.nav}>
 
+            </nav>
         </header>
     )
 }
