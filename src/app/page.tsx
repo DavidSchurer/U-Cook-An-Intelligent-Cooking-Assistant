@@ -5,6 +5,9 @@ export default function Home() {
     return (
         <main className={styles.main}>
             <div className={styles.UCookHomePage}>
+
+              <h1> U-Cook: Virtual Cooking Assistant</h1>
+
               <div className={styles.WelcomePopUp}>
                 <p>Welcome to the U-Cook Virtual Cooking Assistant! <br/><br/>
                   This application strives to help you learn to cook with friends and family while using voice recognition to <br/>
