@@ -1,7 +1,15 @@
+'use client'
 import Image from "next/image";
 import styles from "./page.module.scss";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+    const handleContinueClick = () => {
+      router.push("/contacts-page");
+    };
+
     return (
         <main className={styles.main}>
             <div className={styles.UCookHomePage}>
@@ -15,7 +23,7 @@ export default function Home() {
                   To start cooking please press continue!
                 </p>
 
-                <button type="submit"><strong>Continue</strong></button>
+                <button onClick={handleContinueClick}><strong>Continue</strong></button>
               </div>
              
             </div>
