@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
 
+  const input = useInput();
+
     const handleContinueClick = () => {
       router.push("/contacts-page");
     };
@@ -29,7 +31,7 @@ export default function Home() {
               </div>
              
             </div>
-            {/* <p>{input.transcript}</p> */}
+            <p>{input.transcript}</p>
         </main>
 
   

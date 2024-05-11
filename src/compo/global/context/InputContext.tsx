@@ -43,7 +43,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }, [listening]);
 
     return (
-        <InputContext.Provider value={{}}>
+        <InputContext.Provider value={{transcript}}>
             {children}
         </InputContext.Provider>
     )
