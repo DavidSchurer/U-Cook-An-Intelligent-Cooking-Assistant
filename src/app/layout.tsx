@@ -1,3 +1,4 @@
+import { InputProvider } from 'compo/global/context/InputContext';
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import 'styles/globals.scss';
@@ -14,7 +15,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                <InputProvider>
+                    {children}
+                </InputProvider>
+            </body>
         </html>
     );
 }
