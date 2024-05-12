@@ -5,7 +5,6 @@ import styles from "./page.module.scss";
 import { useInput } from 'compo/global/context/InputContext';
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
-import microphoneImage from '../contacts-page/microphoneImage.png';
 import pastaImage from './pasta.jpg';
 import soupImage from './soups.jpg';
 import sandwichesImage from './sandwiches.jpeg';
@@ -74,16 +73,6 @@ export default function CategoriesPage() {
 
                 </ul>
                 <button type="submit"><strong>Continue</strong></button>
-            </div>
-
-            <div className={styles.MicrophoneIcon}>
-                <Image src={microphoneImage} alt="Microphone Image" style={{ width: '50px', height: '50px' }} />
-            </div>
-
-            <div className={styles.MicrophoneIconButton}>
-                <button onClick={toggleVoiceRecognition}>
-                    Voice Recognition: {voiceRecognition ? 'On' : 'Off'}
-                </button>
             </div>
           </main>
         </>

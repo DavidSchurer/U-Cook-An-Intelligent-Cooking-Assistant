@@ -1,11 +1,18 @@
 'use client';
 
-import Script from 'next/script';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import styles from './_InputContext.module.scss';
+import microphoneImage from 'app/images/microphoneImage.png';
+import Image from 'next/image';
 
 interface InputAPI {
     transcript: string;
+
+    voiceToggle: boolean;
+
+    startListening: ()=>void;
+    stopListening: ()=>void;
 }
 
 export const InputContext = createContext<InputAPI | null>(null);
@@ -18,12 +25,18 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
 
+    const [voiceToggle, setVoiceToggle] = useState(true);
+
     const startListening = () => {
         SpeechRecognition.startListening({continuous: true});
     }
 
     const stopListening = () => {
         SpeechRecognition.stopListening();
+    }
+
+    const toggleVoiceRecognition = () => {
+        setVoiceToggle(prevState => !prevState);
     }
 
     useEffect(()=>{
@@ -43,9 +56,24 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         if(!listening) startListening();
     }, [listening]);
 
+    const api = {
+        transcript,
+        voiceToggle,
+        startListening,
+        stopListening
+    }
+
     return (
-        <InputContext.Provider value={{transcript}}>
+        <InputContext.Provider value={api}>
             {children}
+            <div className={styles.MicrophoneIcon}>
+                <Image src={microphoneImage} alt="Microphone Image" width={50} height={50}/>
+            </div>
+            <div className={styles.MicrophoneIconButton}>
+                <button onClick={toggleVoiceRecognition}>
+                    Voice Recognition: {voiceToggle ? 'On' : 'Off'}
+                </button>
+            </div>
         </InputContext.Provider>
     )
 
