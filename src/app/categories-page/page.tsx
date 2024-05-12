@@ -3,37 +3,71 @@ import React from 'react';
 import Image from "next/image";
 import styles from "./page.module.scss";
 import { useInput } from 'compo/global/context/InputContext';
+import { useState } from 'react';
 import { useRouter } from "next/navigation";
+import microphoneImage from '../contacts-page/microphoneImage.png';
+import pastaImage from './pasta.jpg';
+import soupImage from './soups.jpg';
+import sandwichesImage from './sandwiches.jpeg';
+import chickenImage from './chicken.jpg';
 
 export default function CategoriesPage() {
+    const [voiceRecognition, setVoiceRecognition] = useState(true);
+
+    const toggleVoiceRecognition = () => {
+        setVoiceRecognition(prevState => !prevState);
+    };
+
+    const router = useRouter();
+
+    const handleNavigate = (category: string) => {
+        router.push(`/recipes/${category}`);
+    }
+
     return (
+        <>
+         <main className={styles.main}>
+            <div className={styles.UCookHomePage}>
+               <h1> U-Cook: Virtual Cooking Assistant</h1>
+            </div>
+
             <div className={styles.CategoriesPage}>
-                <h1>Please choose a recepie category:</h1>
-                <ul>
-                    <li className = "horizotal-list">
-                        <button class="button" onclick="">
-                            <img src = "" alt ="pasta"/>
+                <h1>Please Choose a Recipe Category:</h1>
+                <ul className = {styles ["horizontal-list"]}>
+                    <li className= {styles ["horizontal-list-item"]}>
+                        <button className="button" onClick={() => handleNavigate('pasta')}>
+                            <div className="Image">
+                            <Image src = {pastaImage}
+                             height= {150}
+                             alt ="pasta"/>
+                            </div>
                             <span className = "button-text">Pastas</span>
                         </button>
                     </li>
-                        
-                    <li className = "horizotal-list">
-                        <button class="button" onclick="">
-                            <img src = "" alt ="Sandwiches"/>
+
+                    <li className={styles ["horizontal-list-item"]}>
+                        <button className="button" onClick={() => handleNavigate('sandwiches')}>
+                            <div className="Image">
+                            <Image src = {sandwichesImage} height= {150} alt ="Soups"/>
+                            </div>
                             <span className = "button-text">Sandwiches</span>
                         </button>
                     </li>
-                    
-                    <li className = "horizotal-list">
-                        <button class="button" onclick="">
-                            <img src = "" alt ="Soups"/>
+
+                    <li className={styles ["horizontal-list-item"]}>
+                        <button className="button" onClick={() => handleNavigate('soups')}>
+                            <div className="Image">
+                                <Image src = {soupImage} height= {150} alt ="Soups"/>
+                            </div>
                             <span className = "button-text">Soups</span>
                         </button>
                     </li>
 
-                    <li className = "horizotal-list">
-                        <button class="button" onclick="">
-                            <img src = "" alt ="Chicken"/>
+                    <li className={styles ["horizontal-list-item"]}>
+                        <button className="button" onClick={() => handleNavigate('chicken')}>
+                        <div className="Image">
+                        <Image src = {chickenImage} height= {150} alt ="chicken"/>
+                        </div>
                             <span className = "button-text">Chicken</span>
                         </button>
                     </li>
@@ -41,5 +75,17 @@ export default function CategoriesPage() {
                 </ul>
                 <button type="submit"><strong>Continue</strong></button>
             </div>
+
+            <div className={styles.MicrophoneIcon}>
+                <Image src={microphoneImage} alt="Microphone Image" style={{ width: '50px', height: '50px' }} />
+            </div>
+
+            <div className={styles.MicrophoneIconButton}>
+                <button onClick={toggleVoiceRecognition}>
+                    Voice Recognition: {voiceRecognition ? 'On' : 'Off'}
+                </button>
+            </div>
+          </main>
+        </>
     );
 }

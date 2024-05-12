@@ -29,7 +29,7 @@ export default function ContactsPage() {
             </div>
 
             <div className={styles.ContactsPage}>
-                <h1>Please Choose from your list of contacts to create group call:</h1>
+                <h1>Please Choose From Your List of Contacts to Create Group Call:</h1>
                 <ul>
                     <li>David</li>
                     <li>Ben</li>
