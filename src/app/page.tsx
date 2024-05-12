@@ -1,8 +1,9 @@
 'use client'
 import Image from "next/image";
 import styles from "./page.module.scss";
+import microphoneImage from './contacts-page/microphoneImage.png';
+import { useState } from 'react';
 import { useInput } from 'compo/global/context/InputContext';
-
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -11,6 +12,12 @@ export default function Home() {
 
     const handleContinueClick = () => {
       router.push("/contacts-page");
+    };
+
+    const [voiceRecognition, setVoiceRecognition] = useState(true);
+
+    const toggleVoiceRecognition = () => {
+        setVoiceRecognition(prevState => !prevState);
     };
 
     return (
@@ -30,9 +37,16 @@ export default function Home() {
               </div>
              
             </div>
+            <div className={styles.MicrophoneIcon}>
+                <Image src={microphoneImage} alt="Microphone Image" style={{ width: '50px', height: '50px' }}/>
+            </div>
+
+            <div className={styles.MicrophoneIconButton}>
+                <button onClick={toggleVoiceRecognition}>
+                    Voice Recognition: {voiceRecognition ? 'On' : 'Off'}
+                </button>
+            </div>
             <p>{input.transcript}</p>
         </main>
-
-  
     );
 }
