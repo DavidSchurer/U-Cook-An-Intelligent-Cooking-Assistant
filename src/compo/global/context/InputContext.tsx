@@ -1,10 +1,11 @@
 'use client';
 
+import Script from 'next/script';
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 interface InputAPI {
-    
+    transcript: string;
 }
 
 export const InputContext = createContext<InputAPI | null>(null);
@@ -26,10 +27,10 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(()=>{
-        startListening();
         if(listening) return;
+        startListening();
         console.log('Starting to listen...');
-    }, []);
+    }, [listening]);
 
     useEffect(() => {
         if (transcript) {

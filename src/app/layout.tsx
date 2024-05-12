@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import 'styles/globals.scss';
 import 'regenerator-runtime/runtime';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
     title: "U-Cook | An Intelligent Cooking Collaboration Assistant",
@@ -16,6 +17,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                
+            </head>
             <body>
                 <InputProvider>
                     {children}
