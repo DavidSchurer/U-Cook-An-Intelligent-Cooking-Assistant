@@ -6,7 +6,7 @@
     background-color:  gray;
 }
 
-.WelcomePopUp {
+.ContactsPage {
     background-color: gray;
     border-radius: 10px;
     padding: 20px;
@@ -17,11 +17,19 @@
     max-width: 80%;
 }
 
-.WelcomePopUp p {
+.ContactsPage p {
     color: white;
 }
 
-.WelcomePopUp button {
+.ContactsPage h1 {
+    color: white;
+}
+
+.ContactsPage li {
+    color: white;
+}
+
+.ContactsPage button {
     background-color: rgb(103, 99, 99);
     color: white;
     border: none;
@@ -30,7 +38,7 @@
     cursor: pointer;
 }
 
-.WelcomePopUp button:hover {
+.ContactsPage button:hover {
     background-color: rgba(115, 114, 114, 0.8);
 }
 
