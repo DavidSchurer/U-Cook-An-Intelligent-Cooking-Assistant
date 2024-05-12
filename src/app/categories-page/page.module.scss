@@ -35,3 +35,30 @@
 .CategoriesPage button:hover {
     background-color: rgba(115, 114, 114, 0.8);
 }
+.CategoriesPage .horizontal-list {
+    list-style-type: none;
+    padding: 0;
+    overflow: auto;
+    white-space: nowrap;
+}
+.CategoriesPage .horizontal-list-item {
+    display: inline-block;
+    margin-right: 10px; /* Adjust as needed */
+}
+.CategoriesPage .button {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.CategoriesPage .Image{
+    width: 50px; /* Adjust image size as needed */
+    height: 50px; /* Adjust image size as needed */
+    vertical-align: middle;
+    margin-right: 5px; /* Adjust spacing between image and text */
+}
+
+.CategoriesPage .button-text {
+    vertical-align: middle;
+}
