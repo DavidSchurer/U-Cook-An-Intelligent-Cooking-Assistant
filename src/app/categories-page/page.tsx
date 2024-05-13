@@ -11,11 +11,6 @@ import sandwichesImage from './sandwiches.jpeg';
 import chickenImage from './chicken.jpg';
 
 export default function CategoriesPage() {
-    const [voiceRecognition, setVoiceRecognition] = useState(true);
-
-    const toggleVoiceRecognition = () => {
-        setVoiceRecognition(prevState => !prevState);
-    };
 
     const router = useRouter();
 

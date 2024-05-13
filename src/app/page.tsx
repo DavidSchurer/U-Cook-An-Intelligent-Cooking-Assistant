@@ -37,9 +37,6 @@ export default function Home() {
               </div>
              
             </div>
-
-            
-            <p>{input.transcript}</p>
         </main>
     );
 }

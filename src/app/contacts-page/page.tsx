@@ -7,11 +7,6 @@ import { useInput } from 'compo/global/context/InputContext';
 import { useRouter } from "next/navigation";
 
 export default function ContactsPage() {
-      const [voiceRecognition, setVoiceRecognition] = useState(true);
-
-      const toggleVoiceRecognition = () => {
-          setVoiceRecognition(prevState => !prevState);
-      };
 
     const router = useRouter();
     const input = useInput();

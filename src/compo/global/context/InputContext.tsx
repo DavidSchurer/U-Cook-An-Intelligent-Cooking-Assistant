@@ -17,22 +17,50 @@ interface InputAPI {
 
 export const InputContext = createContext<InputAPI | null>(null);
 
-const processTranscript = (transcript: string)=>{
-    console.log(transcript);
-}
-
 export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
 
     const [voiceToggle, setVoiceToggle] = useState(true);
 
+    const [commandTranscript, setCommandTranscript] = useState('');
+
+    const [assistantListening, setAssistantListening] = useState(false);
+    
     const startListening = () => {
         SpeechRecognition.startListening({continuous: true});
     }
 
     const stopListening = () => {
         SpeechRecognition.stopListening();
+    }
+
+    const firstWords = ['i', 'hi', 'hey', 'hello', 'high', 'hay']
+
+    const secondWords = ['cook', 'chef'];
+
+    const processPassiveTranscript = (transcript: string)=>{
+        
+        const words = transcript.split(' ');
+
+        if(words.length < 2) return;
+
+        const lastWord = words[words.length-1].toLowerCase().replace(/[^\w\s]|_/g, '');
+        const secondLastWord = words[words.length-2].toLowerCase().replace(/[^\w\s]|_/g, '');
+
+        console.log([secondLastWord, lastWord]);
+
+        if(firstWords.includes(secondLastWord) && secondWords.includes(lastWord)){
+            resetTranscript();
+            setAssistantListening(true);
+            alert('How are you')
+            return;
+        }
+
+        if(words.length > 5 && !firstWords.includes(lastWord)){
+            resetTranscript();
+        }
+
     }
 
     const toggleVoiceRecognition = () => {
@@ -43,11 +71,12 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         if(listening) return;
         startListening();
         console.log('Starting to listen...');
-    }, [listening]);
+    }, []);
 
     useEffect(() => {
         if (transcript) {
-            processTranscript(transcript);
+            processPassiveTranscript(transcript);
+            console.log('Transcript:',transcript);
         }
     }, [transcript]);
 
@@ -66,13 +95,19 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <InputContext.Provider value={api}>
             {children}
-            <div className={styles.MicrophoneIcon}>
-                <Image src={microphoneImage} alt="Microphone Image" width={50} height={50}/>
-            </div>
-            <div className={styles.MicrophoneIconButton}>
-                <button onClick={toggleVoiceRecognition}>
-                    Voice Recognition: {voiceToggle ? 'On' : 'Off'}
-                </button>
+            <div className={styles.microphoneContainer}>
+                <div className={styles.MicrophoneIcon}>
+                    <Image src={microphoneImage} alt="Microphone Image" width={50} height={50}/>
+                </div>
+                <div className={styles.MicrophoneIconButton}>
+                    <button onClick={toggleVoiceRecognition}>
+                        Voice Recognition: {voiceToggle ? 'On' : 'Off'}
+                    </button>
+                </div>
+                <div className={styles.microphoneTranscript}>
+                    <h3>How can I help:</h3>
+                    {commandTranscript}...
+                </div>
             </div>
         </InputContext.Provider>
     )
