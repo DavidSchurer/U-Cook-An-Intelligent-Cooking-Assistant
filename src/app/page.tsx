@@ -33,7 +33,7 @@ export default function Home() {
                   To start cooking please press continue!
                 </p>
 
-                <button onClick={handleContinueClick}><strong>Continue</strong></button>
+                <button onClick={handleContinueClick} data-continue-button><strong>Continue</strong></button>
               </div>
              
             </div>
