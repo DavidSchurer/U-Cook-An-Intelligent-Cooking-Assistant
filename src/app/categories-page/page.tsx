@@ -29,7 +29,7 @@ export default function CategoriesPage() {
                 <h1>Please Choose a Recipe Category:</h1>
                 <ul className = {styles ["horizontal-list"]}>
                     <li className= {styles ["horizontal-list-item"]}>
-                        <button className="button" onClick={() => handleNavigate('pasta')}>
+                        <button className="button" onClick={() => handleNavigate('pasta')} data-pastas-button>
                             <div className="Image">
                             <Image src = {pastaImage}
                              height= {150}
@@ -67,7 +67,7 @@ export default function CategoriesPage() {
                     </li>
 
                 </ul>
-                <button type="submit"><strong>Continue</strong></button>
+                <button type="submit" data-continue-button><strong>Continue</strong></button>
             </div>
           </main>
         </>

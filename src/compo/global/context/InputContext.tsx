@@ -43,6 +43,24 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         
         const words = transcript.split(' ');
 
+        // For all pages with a continue button, when the user says the word 'Continue'
+        // the continue button will be clicked.
+        if (words.includes('continue')) {
+            const continueButton = document.querySelector('button[data-continue-button]');
+            if (continueButton) {
+                continueButton.click();
+            }
+        }
+
+        // On the recipe category page, when the user says 'Pasta' the pastas recipe
+        // button will be clicked.
+        if (words.includes('pasta') || words.includes('pastas')) {
+            const pastasButton = document.querySelector('button[data-pastas-button]');
+            if (pastasButton) {
+                pastasButton.click();
+            }
+        }
+
         if(words.length < 2) return;
 
         const lastWord = words[words.length-1].toLowerCase().replace(/[^\w\s]|_/g, '');
@@ -60,7 +78,6 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         if(words.length > 5 && !firstWords.includes(lastWord)){
             resetTranscript();
         }
-
     }
 
     const toggleVoiceRecognition = () => {

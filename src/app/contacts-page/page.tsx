@@ -30,7 +30,7 @@ export default function ContactsPage() {
                     <li>Shivam</li>
                     <li>Harshitha</li>
                 </ul>
-                <button onClick={handleContinueClick}><strong>Continue</strong></button>
+                <button onClick={handleContinueClick} data-continue-button><strong>Continue</strong></button>
             </div>
           </main>
     );
