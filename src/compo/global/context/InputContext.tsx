@@ -6,6 +6,8 @@ import styles from './_InputContext.module.scss';
 import microphoneImage from 'app/images/microphoneImage.png';
 import Image from 'next/image';
 
+import useSound from 'use-sound';
+
 interface InputAPI {
     transcript: string;
 
@@ -18,6 +20,10 @@ interface InputAPI {
 export const InputContext = createContext<InputAPI | null>(null);
 
 export const InputProvider = ({ children }: { children: React.ReactNode }) => {
+
+    const [playWake] = useSound('/sounds/cook_wakeup.mp3');
+    const [playFail] = useSound('/sounds/cook_fail.mp3');
+    const [playProcess] = useSound('/sounds/cook_process.mp3');
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
 
@@ -35,6 +41,8 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         SpeechRecognition.stopListening();
     }
 
+    const voiceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
     const firstWords = ['me', 'i', 'hi', 'hey', 'hello', 'high', 'hay']
 
     const secondWords = ['cook', 'chef'];
@@ -43,23 +51,23 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         
         const words = transcript.split(' ');
 
-        // For all pages with a continue button, when the user says the word 'Continue'
-        // the continue button will be clicked.
-        if (words.includes('continue')) {
-            const continueButton = document.querySelector('button[data-continue-button]');
-            if (continueButton) {
-                continueButton.click();
-            }
-        }
+        // // For all pages with a continue button, when the user says the word 'Continue'
+        // // the continue button will be clicked.
+        // if (words.includes('continue')) {
+        //     const continueButton = document.querySelector('button[data-continue-button]');
+        //     if (continueButton) {
+        //         continueButton.click();
+        //     }
+        // }
 
-        // On the recipe category page, when the user says 'Pasta' the pastas recipe
-        // button will be clicked.
-        if (words.includes('pasta') || words.includes('pastas')) {
-            const pastasButton = document.querySelector('button[data-pastas-button]');
-            if (pastasButton) {
-                pastasButton.click();
-            }
-        }
+        // // On the recipe category page, when the user says 'Pasta' the pastas recipe
+        // // button will be clicked.
+        // if (words.includes('pasta') || words.includes('pastas')) {
+        //     const pastasButton = document.querySelector('button[data-pastas-button]');
+        //     if (pastasButton) {
+        //         pastasButton.click();
+        //     }
+        // }
 
         if(words.length < 2) return;
 
@@ -71,11 +79,11 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         if(firstWords.includes(secondLastWord) && secondWords.includes(lastWord)){
             resetTranscript();
             setAssistantListening(true);
-            alert('How are you')
+            playWake();
             return;
         }
 
-        if(words.length > 5 && !firstWords.includes(lastWord)){
+        if(!assistantListening && words.length > 5 && !firstWords.includes(lastWord)){
             resetTranscript();
         }
     }
@@ -95,6 +103,23 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             processPassiveTranscript(transcript);
             console.log('Transcript:',transcript);
         }
+    }, [transcript]);
+
+    useEffect(() => {
+        if(!assistantListening) return;
+
+        clearTimeout(voiceTimerRef.current);
+        voiceTimerRef.current = setTimeout(()=>{
+            setAssistantListening(false);
+
+            if(transcript === ''){
+                playFail();
+                return;
+            }
+
+            resetTranscript();
+            playProcess();
+        }, 2000);
     }, [transcript]);
 
     useEffect(()=>{
@@ -121,9 +146,9 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
                         Voice Recognition: {voiceToggle ? 'On' : 'Off'}
                     </button>
                 </div>
-                <div className={styles.microphoneTranscript}>
-                    <h3>How can I help:</h3>
-                    {commandTranscript}...
+                <div className={`${styles.microphoneTranscript} ${assistantListening ? styles.visible : ''}`}>
+                    <h3 className={styles.label}>How can I help:</h3>
+                    {transcript}...
                 </div>
             </div>
         </InputContext.Provider>

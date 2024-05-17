@@ -31,6 +31,8 @@
     z-index: 1000;
     width: 300px;
     word-wrap: break-word;
+    visibility: hidden;
+    opacity: 0;
 
     &:empty {
         display: none;
@@ -39,5 +41,15 @@
     h3 {
         margin: 0;
         font-size: 1.2rem;
+    }
+
+    &.visible {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .label {
+        margin-bottom: 5px;
+        font-weight: 400;
     }
 }
