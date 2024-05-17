@@ -35,7 +35,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         SpeechRecognition.stopListening();
     }
 
-    const firstWords = ['i', 'hi', 'hey', 'hello', 'high', 'hay']
+    const firstWords = ['me', 'i', 'hi', 'hey', 'hello', 'high', 'hay']
 
     const secondWords = ['cook', 'chef'];
 
