@@ -32,6 +32,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const [commandTranscript, setCommandTranscript] = useState('');
 
     const [assistantListening, setAssistantListening] = useState(false);
+    const [assistantFeedback, setAssistantFeedback] = useState(false);
     
     const startListening = () => {
         SpeechRecognition.startListening({continuous: true});
@@ -42,10 +43,15 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const voiceTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const feedbackTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-    const firstWords = ['me', 'i', 'hi', 'hey', 'hello', 'high', 'hay']
+    const firstWords = ['a', 'me', 'i', 'hi', 'hey', 'hello', 'high', 'hay']
 
     const secondWords = ['cook', 'chef'];
+
+    const processTranscript = (transcript: string)=>{
+        return "I don't understand what you mean."
+    }
 
     const processPassiveTranscript = (transcript: string)=>{
         
@@ -76,9 +82,14 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log([secondLastWord, lastWord]);
 
+        if(assistantListening) {
+            setCommandTranscript(transcript);
+        }
+
         if(firstWords.includes(secondLastWord) && secondWords.includes(lastWord)){
             resetTranscript();
             setAssistantListening(true);
+            setAssistantFeedback(false);
             playWake();
             return;
         }
@@ -89,7 +100,17 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const toggleVoiceRecognition = () => {
+        if(voiceToggle)
+            stopListening();
+        else
+            startListening();
         setVoiceToggle(prevState => !prevState);
+    }
+
+    const speakText = (text: string) => {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        synth.speak(utterance);
     }
 
     useEffect(()=>{
@@ -116,10 +137,21 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
                 playFail();
                 return;
             }
-
             resetTranscript();
             playProcess();
-        }, 2000);
+
+            setAssistantFeedback(true);
+            
+            const response = processTranscript(transcript);
+            speakText(response);
+
+            clearTimeout(feedbackTimerRef.current);
+            feedbackTimerRef.current = setTimeout(()=>{
+                setCommandTranscript("");
+                setAssistantFeedback(false);
+            }, 5000);
+
+        }, transcript=='' ? 5000 : 2000);
     }, [transcript]);
 
     useEffect(()=>{
@@ -146,9 +178,14 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
                         Voice Recognition: {voiceToggle ? 'On' : 'Off'}
                     </button>
                 </div>
-                <div className={`${styles.microphoneTranscript} ${assistantListening ? styles.visible : ''}`}>
-                    <h3 className={styles.label}>How can I help:</h3>
-                    {transcript}...
+                <div className={`${styles.microphoneTranscript} ${assistantListening || assistantFeedback ? styles.visible : ''}`}>
+                    <div className={`${styles.prompt} ${!assistantFeedback ? styles.visible : ''}`}>
+                        <h3 className={styles.label}>How can I help:</h3>
+                    </div>
+                    {commandTranscript}...
+                    <div className={`${styles.response} ${assistantFeedback ? styles.visible : ''}`}>
+                        <p>I don&apos;t understand what you mean</p>
+                    </div>
                 </div>
             </div>
         </InputContext.Provider>

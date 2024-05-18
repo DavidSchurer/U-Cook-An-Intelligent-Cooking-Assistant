@@ -52,4 +52,18 @@
         margin-bottom: 5px;
         font-weight: 400;
     }
+
+    .prompt, .response {
+        visibility: hidden;
+        opacity: 0;
+
+        &.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+
+    .response {
+        font-weight: 400;
+    }
 }
