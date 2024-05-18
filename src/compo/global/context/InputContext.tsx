@@ -27,7 +27,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
 
-    const [voiceToggle, setVoiceToggle] = useState(true);
+    const [voiceToggle, setVoiceToggle] = useState(false);
 
     const [commandTranscript, setCommandTranscript] = useState('');
 
@@ -50,6 +50,9 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const secondWords = ['cook', 'chef'];
 
     const processTranscript = (transcript: string)=>{
+
+        // add voice processing data here
+
         return "I don't understand what you mean."
     }
 
@@ -91,6 +94,9 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             setAssistantListening(true);
             setAssistantFeedback(false);
             playWake();
+            clearTimeout(voiceTimerRef.current);
+            clearTimeout(feedbackTimerRef.current);
+            setCommandTranscript("");
             return;
         }
 
@@ -114,9 +120,16 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(()=>{
-        if(listening) return;
-        startListening();
-        console.log('Starting to listen...');
+
+        const onWindowLoad = () => {
+            // startListening();
+        }
+
+        window.addEventListener('load', onWindowLoad);
+
+        return () => {
+            window.removeEventListener('load', onWindowLoad);
+        }
     }, []);
 
     useEffect(() => {
@@ -153,11 +166,6 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
         }, transcript=='' ? 5000 : 2000);
     }, [transcript]);
-
-    useEffect(()=>{
-        console.log('Listening:',listening);
-        if(!listening) startListening();
-    }, [listening]);
 
     const api = {
         transcript,
