@@ -60,7 +60,7 @@ function calculateLikelihood(target, input) {
       let maxSimilarity = 0;
       inputWords.forEach(inputWord => {
         let similarity = wordSimilarity(targetWord, inputWord);
-        if(similarity<0.5) similarity = 0;
+        if(similarity<=0.5) similarity = 0;
         if (similarity > maxSimilarity) {
           maxSimilarity = similarity;
         }
