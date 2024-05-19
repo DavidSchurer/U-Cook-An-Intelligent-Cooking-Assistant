@@ -6,8 +6,8 @@ import styles from './_InputContext.module.scss';
 import microphoneImage from 'app/images/microphoneImage.png';
 import Image from 'next/image';
 
-import useSound from 'use-sound';
 import { convertNumbersInPhrase } from 'util/numToWorded';
+import useAudio from 'util/audio/useAudio';
 
 // Function to calculate Levenshtein distance
 function levenshtein(a, b) {
@@ -50,7 +50,7 @@ function levenshtein(a, b) {
   }
 
 // Function to calculate the likelihood based on word similarity
-function calculateLikelihood2(target, input) {
+function calculateLikelihood(target, input) {
     const targetWords = target.split(' ');
     const inputWords = input.split(' ');
   
@@ -59,7 +59,8 @@ function calculateLikelihood2(target, input) {
     targetWords.forEach(targetWord => {
       let maxSimilarity = 0;
       inputWords.forEach(inputWord => {
-        const similarity = wordSimilarity(targetWord, inputWord);
+        let similarity = wordSimilarity(targetWord, inputWord);
+        if(similarity<0.5) similarity = 0;
         if (similarity > maxSimilarity) {
           maxSimilarity = similarity;
         }
@@ -68,15 +69,6 @@ function calculateLikelihood2(target, input) {
     });
   
     return totalSimilarity / targetWords.length;
-  }
-
-  function calculateLikelihood(target, input) {
-    // Example likelihood function: string similarity using Jaccard index
-    const targetSet = new Set(target.split(' '));
-    const inputSet = new Set(input.split(' '));
-    const intersection = new Set([...targetSet].filter(x => inputSet.has(x)));
-    const union = new Set([...targetSet, ...inputSet]);
-    return intersection.size / union.size;
   }
 
 const findMaxIndexes = (arr: number[], threshold: number) => {
@@ -97,29 +89,12 @@ const findMaxIndexes = (arr: number[], threshold: number) => {
     return {max, maxIndexes};
 }
 
-const findSensitive = (map: Map<string,VoiceRouteProps>)=>{
-    let sensitive = false;
-    map.forEach((value, key)=>{
-        if(value.sensitive) sensitive = true;
-    });
-    return sensitive;
-
-}
-
 const determineCommand = (voiceRoutes: Map<string,VoiceRouteProps>, targetPhrase: string, inputPhrases: string[])=>{
 
     let weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
     console.log('weights',weights);
     let maxIndexesCompo = findMaxIndexes(weights, 0);
-    let sensitive = findSensitive(voiceRoutes);
-    if(maxIndexesCompo.max == 0 || sensitive){
-        weights = inputPhrases.map(phrase => calculateLikelihood2(targetPhrase, phrase));
-        console.log('weights2',weights);
-        maxIndexesCompo = findMaxIndexes(weights, 0.3);
-    }else{
-        let prospectiveWeights = inputPhrases.map(phrase => calculateLikelihood2(targetPhrase, phrase));
-        console.log('prospectiveWeights2',prospectiveWeights);
-    }
+
     let maxIndexes = maxIndexesCompo.maxIndexes;
     console.log('maxIndexes',maxIndexes);
 
@@ -132,9 +107,6 @@ interface InputAPI {
 
     voiceToggle: boolean;
 
-    startListening: ()=>void;
-    stopListening: ()=>void;
-
     addVoiceRoute: (route: string, feedback: string|string[]|(()=>string[]), callback: ()=>void, args?: any)=>void;
     removeVoiceRoute: (route: string)=>void;
 }
@@ -145,7 +117,6 @@ type VoiceRouteProps = {
     feedback: string[]|(()=>string[]);
     callback: VoiceRoute;
     visual?: string;
-    sensitive?: boolean;
 }
 
 const sanitizeTranscript = (transcript: string) => {
@@ -156,13 +127,13 @@ export const InputContext = createContext<InputAPI | null>(null);
 
 export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const [playWake] = useSound('/sounds/cook_wakeup.mp3');
-    const [playFail] = useSound('/sounds/cook_fail.mp3');
-    const [playProcess] = useSound('/sounds/cook_process.mp3');
+    const audioWake = useAudio('/sounds/cook_wakeup.mp3');
+    const audioFail = useAudio('/sounds/cook_fail.mp3');
+    const audioProcess = useAudio('/sounds/cook_process.mp3');
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
 
-    const [voiceToggle, setVoiceToggle] = useState(false);
+    const [voiceToggle, setVoiceToggle] = useState(true);
 
     const [commandTranscript, setCommandTranscript] = useState('');
 
@@ -170,11 +141,16 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const [assistantFeedback, setAssistantFeedback] = useState(false);
     const [assistantMessage, setAssistantMessage] = useState([]);
 
+    const residualTranscript = useRef<string | null>(null);
+
+    const lastWakeupIndex = useRef<number | null>(null);
+    const wakeupLenRef = useRef<number | null>(null);
+
     const voiceRoutes = useRef<Map<string,VoiceRouteProps>>(new Map());
 
     const addVoiceRoute = (route: string, feedback: string|string[]|(()=>string[]), callback: VoiceRoute, args: any = {}) => {
         if(typeof feedback === 'string') feedback = [feedback];
-        const props: VoiceRouteProps = {feedback, callback, visual: args.visual, sensitive: args.sensitive};
+        const props: VoiceRouteProps = {feedback, callback, visual: args.visual};
         voiceRoutes.current.set(sanitizeTranscript(route), props);
     }
 
@@ -190,7 +166,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const stopListening = () => {
-        SpeechRecognition.stopListening();
+        SpeechRecognition.abortListening();
     }
 
     const voiceTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -220,13 +196,21 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         visual: "Back"
     }
 
+    const muteRoute = {
+        feedback: ['Okay, I have muted the mic.'],
+        callback: ()=>{setVoiceToggle(false)},
+        visual: "Mute"
+    }
+
     useEffect(()=>{
         addVoiceRoute('help', helpRoute.feedback, helpRoute.callback, helpRoute);
         addVoiceRoute('back', backRoute.feedback, backRoute.callback, backRoute);
+        addVoiceRoute('mute', muteRoute.feedback, muteRoute.callback, muteRoute);
 
         return ()=>{
             removeVoiceRoute('help');
             removeVoiceRoute('back');
+            removeVoiceRoute('mute');
         }
     }, []);
 
@@ -279,26 +263,8 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         
         const words = transcript.split(' ');
 
-        // // For all pages with a continue button, when the user says the word 'Continue'
-        // // the continue button will be clicked.
-        // if (words.includes('continue')) {
-        //     const continueButton = document.querySelector('button[data-continue-button]');
-        //     if (continueButton) {
-        //         continueButton.click();
-        //     }
-        // }
-
-        // // On the recipe category page, when the user says 'Pasta' the pastas recipe
-        // // button will be clicked.
-        // if (words.includes('pasta') || words.includes('pastas')) {
-        //     const pastasButton = document.querySelector('button[data-pastas-button]');
-        //     if (pastasButton) {
-        //         pastasButton.click();
-        //     }
-        // }
-
         if(assistantListening) {
-            setCommandTranscript(transcript);
+            setCommandTranscript(transcript.substring(lastWakeupIndex.current + wakeupLenRef.current));
         }
 
         if(words.length < 2) return;
@@ -309,30 +275,37 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         console.log([secondLastWord, lastWord]);
 
         if(firstWords.includes(secondLastWord) && secondWords.includes(lastWord)){
-            resetTranscript();
+
+            lastWakeupIndex.current = transcript.toLowerCase().lastIndexOf([secondLastWord, lastWord].join(' '));
+            wakeupLenRef.current = [secondLastWord, lastWord].join(' ').length;
+
             setAssistantListening(true);
             setAssistantFeedback(false);
             setAssistantMessage([]);
             window.speechSynthesis.cancel();
-            playWake();
+            audioWake();
             clearTimeout(voiceTimerRef.current);
             clearTimeout(feedbackTimerRef.current);
             setCommandTranscript("");
             return;
         }
 
-        if(!assistantListening && words.length > 5 && !firstWords.includes(lastWord)){
+        if(!assistantListening && words.length > 10 && !firstWords.includes(lastWord)){
             resetTranscript();
         }
     }
 
     const toggleVoiceRecognition = () => {
-        if(voiceToggle)
-            stopListening();
-        else
-            startListening();
         setVoiceToggle(prevState => !prevState);
     }
+
+    useEffect(() => {
+        if(voiceToggle){
+            startListening();
+        } else {
+            stopListening();
+        }
+    }, [voiceToggle]);
 
     const speakText = (text: string) => {
         const synth = window.speechSynthesis;
@@ -355,11 +328,11 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             setAssistantListening(false);
 
             if(transcript === ''){
-                playFail();
+                audioFail();
                 return;
             }
             resetTranscript();
-            playProcess();
+            audioProcess();
 
             setAssistantFeedback(true);
             
@@ -389,8 +362,6 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const api = {
         transcript,
         voiceToggle,
-        startListening,
-        stopListening,
 
         addVoiceRoute,
         removeVoiceRoute

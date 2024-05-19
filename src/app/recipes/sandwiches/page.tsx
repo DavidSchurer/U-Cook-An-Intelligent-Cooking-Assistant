@@ -29,8 +29,7 @@ export default function Sandwiches() {
             visual: 'Select Club Sandwich'
         });
         addVoiceRoute('caprese sandwich', 'Okay, I have selected Caprese Sandwich.', () => handleSelectRecipe('Caprese'), {
-            visual: 'Select Caprese Sandwich',
-            sensitive: true
+            visual: 'Select Caprese Sandwich'
         });
 
         return () => {
