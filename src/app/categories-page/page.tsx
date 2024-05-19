@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from "next/image";
 import styles from "./page.module.scss";
 import { useInput } from 'compo/global/context/InputContext';
@@ -13,6 +13,29 @@ import chickenImage from './chicken.jpg';
 export default function CategoriesPage() {
 
     const router = useRouter();
+    const {addVoiceRoute, removeVoiceRoute} = useInput();
+
+    useEffect(()=>{
+        addVoiceRoute('pastas', 'Okay, I have selected Pastas.', () => handleNavigate('pasta'), {
+            visual: 'Select Pastas'
+        });
+        addVoiceRoute('sandwiches', 'Okay, I have selected Sandwiches.', () => handleNavigate('sandwiches'), {
+            visual: 'Select Sandwiches'
+        });
+        addVoiceRoute('soups', 'Okay, I have selected Soups.', () => handleNavigate('soups'), {
+            visual: 'Select Soups'
+        });
+        addVoiceRoute('chicken', 'Okay, I have selected Chicken.', () => handleNavigate('chicken'), {
+            visual: 'Select Chicken'
+        });
+
+        return () => {
+            removeVoiceRoute('pastas');
+            removeVoiceRoute('sandwiches');
+            removeVoiceRoute('soups');
+            removeVoiceRoute('chicken');
+        }
+    }, []);
 
     const handleNavigate = (category: string) => {
         router.push(`/recipes/${category}`);

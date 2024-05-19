@@ -24,7 +24,7 @@ export default function Home() {
         }
       }
 
-      addVoiceRoute('continue', 'Okay, I have pressed Continue for you.', pressContinue);
+      addVoiceRoute('continue', ['Okay, I have pressed Continue for you.'], pressContinue);
 
       return () => {
         removeVoiceRoute('continue');
