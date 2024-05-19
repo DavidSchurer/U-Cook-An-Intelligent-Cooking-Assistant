@@ -129,8 +129,20 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         visual: "Help"
     }
 
+    const backRoute = {
+        feedback: ['Going back...'],
+        callback: ()=>{window.history.back()},
+        visual: "Back"
+    }
+
     useEffect(()=>{
         addVoiceRoute('help', helpRoute.feedback, helpRoute.callback, helpRoute);
+        addVoiceRoute('back', backRoute.feedback, backRoute.callback, backRoute);
+
+        return ()=>{
+            removeVoiceRoute('help');
+            removeVoiceRoute('back');
+        }
     }, []);
 
     const processTranscript = (transcript: string)=>{
