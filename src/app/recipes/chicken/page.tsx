@@ -1,10 +1,13 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
+import { useInput } from 'compo/global/context/InputContext';
 
 export default function Chicken() {
     const router = useRouter();
+
+    const { addVoiceRoute, removeVoiceRoute } = useInput();
 
     // Sample data for chicken recipes
     const chickenRecipes = [
@@ -17,6 +20,24 @@ export default function Chicken() {
     const handleSelectRecipe = (id: string) => {
         router.push(`/recipes/chicken/${id}`);
     }
+
+    useEffect(() => {
+        addVoiceRoute('lemon herb chicken', 'Okay, I have selected Grilled Lemon Herb Chicken.', () => handleSelectRecipe('lemon-herb-chicken'), {
+            visual: 'Select Grilled Lemon Herb Chicken'
+        });
+        addVoiceRoute('creamy garlic parmesan chicken', 'Okay, I have selected Creamy Garlic Parmesan Chicken.', () => handleSelectRecipe('garlic-parmesan-chicken'), {
+            visual: 'Select Creamy Garlic Parmesan Chicken'
+        });
+        addVoiceRoute('honey mustard baked chicken', 'Okay, I have selected Honey Mustard Baked Chicken.', () => handleSelectRecipe('honey-mustard-chicken'), {
+            visual: 'Select Honey Mustard Baked Chicken'
+        });
+
+        return () => {
+            removeVoiceRoute('lemon herb chicken');
+            removeVoiceRoute('creamy garlic parmesan chicken');
+            removeVoiceRoute('honey mustard baked chicken');
+        }
+    }, []);
 
     return (
     <>
