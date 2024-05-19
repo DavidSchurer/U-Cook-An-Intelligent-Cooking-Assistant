@@ -15,7 +15,12 @@ interface InputAPI {
 
     startListening: ()=>void;
     stopListening: ()=>void;
+
+    addVoiceRoute: (route: string, callback: ()=>void)=>void;
+    removeVoiceRoute: (route: string)=>void;
 }
+
+type VoiceRoute = ()=>void;
 
 export const InputContext = createContext<InputAPI | null>(null);
 
@@ -33,6 +38,17 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [assistantListening, setAssistantListening] = useState(false);
     const [assistantFeedback, setAssistantFeedback] = useState(false);
+    const [assistantMessage, setAssistantMessage] = useState('');
+
+    const voiceRoutes = useRef<Map<string,VoiceRoute>>(new Map());
+
+    const addVoiceRoute = (route: string, callback: VoiceRoute) => {
+        voiceRoutes.current.set(route, callback);
+    }
+
+    const removeVoiceRoute = (route: string) => {
+        voiceRoutes.current.delete(route);
+    }
     
     const startListening = () => {
         SpeechRecognition.startListening({continuous: true});
@@ -52,6 +68,14 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const processTranscript = (transcript: string)=>{
 
         // add voice processing data here
+
+        if(voiceRoutes.current.size == 1){
+            const callback = voiceRoutes.current.get('continue');
+            if(callback){
+                callback();
+            }
+            return "I have successfully performed the command.";
+        }
 
         return "I don't understand what you mean."
     }
@@ -157,6 +181,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             
             const response = processTranscript(transcript);
             speakText(response);
+            setAssistantMessage(response);
 
             clearTimeout(feedbackTimerRef.current);
             feedbackTimerRef.current = setTimeout(()=>{
@@ -171,7 +196,10 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         transcript,
         voiceToggle,
         startListening,
-        stopListening
+        stopListening,
+
+        addVoiceRoute,
+        removeVoiceRoute
     }
 
     return (
@@ -192,7 +220,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
                     </div>
                     {commandTranscript}...
                     <div className={`${styles.response} ${assistantFeedback ? styles.visible : ''}`}>
-                        <p>I don&apos;t understand what you mean</p>
+                        <p>{assistantMessage}</p>
                     </div>
                 </div>
             </div>

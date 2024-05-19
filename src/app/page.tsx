@@ -2,13 +2,13 @@
 import Image from "next/image";
 import styles from "./page.module.scss";
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInput } from 'compo/global/context/InputContext';
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const input = useInput();
+  const {addVoiceRoute, removeVoiceRoute} = useInput();
 
     const handleContinueClick = () => {
       router.push("/contacts-page");
@@ -19,6 +19,24 @@ export default function Home() {
     const toggleVoiceRecognition = () => {
         setVoiceRecognition(prevState => !prevState);
     };
+
+    const continueButtonRef = useRef<HTMLButtonElement | null>(null);
+
+    useEffect(()=>{
+
+      const pressContinue = () => {
+        if(continueButtonRef.current){
+          continueButtonRef.current.click();
+        }
+      }
+
+      addVoiceRoute('continue', pressContinue);
+
+      return () => {
+        removeVoiceRoute('continue');
+      }
+
+    }, []);
 
     return (
         <main className={styles.main}>
@@ -33,7 +51,7 @@ export default function Home() {
                   To start cooking please press continue!
                 </p>
 
-                <button onClick={handleContinueClick} data-continue-button><strong>Continue</strong></button>
+                <button ref={continueButtonRef} onClick={handleContinueClick} data-continue-button><strong>Continue</strong></button>
               </div>
              
             </div>
