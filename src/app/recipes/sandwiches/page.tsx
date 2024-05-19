@@ -6,11 +6,11 @@ import styles from './page.module.scss';  // Ensure you have the corresponding C
 export default function Sandwiches() {
     const router = useRouter();
 
-    // Sample data for pasta recipes
+    // Sample data for sandwich recipes
     const sandwichRecipes = [
-        { id: '1', name: 'BLT Sandwich', description: 'This sandwich combines crispy bacon, fresh lettuce, and tomatoes with mayo and seasoning.' },
-        { id: '2', name: 'Club Sandwich', description: 'This sandwich comes with layers of turkey, bacon, lettuce, tomato, and mayonnaise between toasted bread.' },
-        { id: '3', name: 'Caprese Sandwich', description: 'Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze or olive oil' }
+        { id: 'blt-sandwich', name: 'BLT Sandwich', description: 'This sandwich combines crispy bacon, fresh lettuce, and tomatoes with mayo and seasoning.' },
+        { id: 'club-sandwich', name: 'Club Sandwich', description: 'This sandwich comes with layers of turkey, bacon, lettuce, tomato, and mayonnaise between toasted bread.' },
+        { id: 'caprese-sandwich', name: 'Caprese Sandwich', description: 'Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze or olive oil' }
     ];
 
     // Function to handle navigation to the detailed recipe page

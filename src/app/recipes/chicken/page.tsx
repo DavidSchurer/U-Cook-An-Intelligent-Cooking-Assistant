@@ -6,11 +6,11 @@ import styles from './page.module.scss';  // Ensure you have the corresponding C
 export default function Chicken() {
     const router = useRouter();
 
-    // Sample data for pasta recipes
+    // Sample data for chicken recipes
     const chickenRecipes = [
-        { id: '1', name: 'Grilled Lemon Herb Chicken', description: 'Juicy chicken marinated in zesty lemon and herbs, grilled to perfection for a fresh, flavorful dish.' },
-        { id: '2', name: 'Creamy Garlic Parmesan Chicken', description: 'Pan-seared chicken in a creamy garlic Parmesan sauce, rich and indulgent, perfect with pasta or veggies.' },
-        { id: '3', name: 'Honey Mustard Baked Chicken', description: 'Tender chicken thighs glazed in sweet honey mustard, baked to sticky perfection, a simple crowd-pleaser.' }
+        { id: 'lemon-herb-chicken', name: 'Grilled Lemon Herb Chicken', description: 'Juicy chicken marinated in zesty lemon and herbs, grilled to perfection for a fresh, flavorful dish.' },
+        { id: 'garlic-parmesan-chicken', name: 'Creamy Garlic Parmesan Chicken', description: 'Pan-seared chicken in a creamy garlic Parmesan sauce, rich and indulgent, perfect with pasta or veggies.' },
+        { id: 'honey-mustard-chicken', name: 'Honey Mustard Baked Chicken', description: 'Tender chicken thighs glazed in sweet honey mustard, baked to sticky perfection, a simple crowd-pleaser.' }
     ];
 
     // Function to handle navigation to the detailed recipe page
