@@ -18,7 +18,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
-            
+                <link rel="icon" href="/favicon.ico" />
+                <link rel="icon" href="/favicon-dark.ico" media="(prefers-color-scheme: dark)"/>
             </head>
             <body>
                 <InputProvider>

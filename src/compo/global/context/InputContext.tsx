@@ -67,8 +67,11 @@ function calculateLikelihood(target, input) {
       });
       totalSimilarity += maxSimilarity;
     });
+
+    let likelihood = totalSimilarity / targetWords.length;
+    if(likelihood<0.1) likelihood = 0;
   
-    return totalSimilarity / targetWords.length;
+    return likelihood;
   }
 
 const findMaxIndexes = (arr: number[], threshold: number) => {
@@ -94,6 +97,8 @@ const determineCommand = (voiceRoutes: Map<string,VoiceRouteProps>, targetPhrase
     let weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
     console.log('weights',weights);
     let maxIndexesCompo = findMaxIndexes(weights, 0);
+
+    if(maxIndexesCompo.max == 0) return [];
 
     let maxIndexes = maxIndexesCompo.maxIndexes;
     console.log('maxIndexes',maxIndexes);
@@ -146,8 +151,13 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const lastWakeupIndex = useRef<number | null>(null);
     const wakeupLenRef = useRef<number | null>(null);
 
-    const voiceRoutes = useRef<Map<string,VoiceRouteProps>>(new Map());
+    const extractTranscript = (transcript: string) => {
+        if(lastWakeupIndex.current === null || wakeupLenRef.current === null) return transcript;
+        return transcript.slice(lastWakeupIndex.current + wakeupLenRef.current);
+    }
 
+    const voiceRoutes = useRef<Map<string,VoiceRouteProps>>(new Map());
+    
     const addVoiceRoute = (route: string, feedback: string|string[]|(()=>string[]), callback: VoiceRoute, args: any = {}) => {
         if(typeof feedback === 'string') feedback = [feedback];
         const props: VoiceRouteProps = {feedback, callback, visual: args.visual};
@@ -264,7 +274,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         const words = transcript.split(' ');
 
         if(assistantListening) {
-            setCommandTranscript(transcript.substring(lastWakeupIndex.current + wakeupLenRef.current));
+            setCommandTranscript(extractTranscript(transcript));
         }
 
         if(words.length < 2) return;
@@ -321,23 +331,27 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }, [transcript]);
 
     useEffect(() => {
-        if(!assistantListening) return;
+
+        console.log('extracted:',extractTranscript(transcript));
 
         clearTimeout(voiceTimerRef.current);
         voiceTimerRef.current = setTimeout(()=>{
+
+            if(!assistantListening) return;
             setAssistantListening(false);
 
-            if(transcript === ''){
+            if(!assistantFeedback && extractTranscript(transcript) === ''){
                 audioFail();
                 return;
             }
             resetTranscript();
+
             audioProcess();
 
             setAssistantFeedback(true);
             
             const response = processTranscript(sanitizeTranscript(transcript));
-            speakText(response.join(' '));
+            speakText(response.join('\n'));
             setAssistantMessage(response);
 
             const startCloseTimer = ()=>{
@@ -356,7 +370,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
             startCloseTimer();
 
-        }, transcript=='' ? 5000 : 2000);
+        }, extractTranscript(transcript)=='' ? 5000 : 2000);
     }, [transcript]);
 
     const api = {

@@ -80,7 +80,9 @@ export default function ContactsPage() {
         visual: 'De-select Option 4'
       });
 
-      addVoiceRoute('continue', ['Okay, I have pressed Continue for you.'], handleContinueClick);
+      addVoiceRoute('continue', ['Okay, I have pressed Continue for you.'], handleContinueClick, {
+        visual: 'Continue'
+      });
 
       return () => {
         removeVoiceRoute('select option 1');
