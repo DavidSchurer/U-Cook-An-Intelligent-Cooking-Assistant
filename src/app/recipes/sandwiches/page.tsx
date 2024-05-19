@@ -1,10 +1,13 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
+import { useInput } from 'compo/global/context/InputContext';
 
 export default function Sandwiches() {
     const router = useRouter();
+
+    const { addVoiceRoute, removeVoiceRoute } = useInput();
 
     // Sample data for sandwich recipes
     const sandwichRecipes = [
@@ -17,6 +20,24 @@ export default function Sandwiches() {
     const handleSelectRecipe = (id: string) => {
         router.push(`/recipes/sandwiches/${id}`);
     }
+
+    useEffect(() => {
+        addVoiceRoute('blt sandwich', 'Okay, I have selected BLT Sandwich.', () => handleSelectRecipe('blt-sandwich'), {
+            visual: 'Select BLT Sandwich'
+        });
+        addVoiceRoute('club sandwich', 'Okay, I have selected Club Sandwich.', () => handleSelectRecipe('club-sandwich'), {
+            visual: 'Select Club Sandwich'
+        });
+        addVoiceRoute('caprese sandwich', 'Okay, I have selected Caprese Sandwich.', () => handleSelectRecipe('caprese-sandwich'), {
+            visual: 'Select Caprese Sandwich'
+        });
+
+        return () => {
+            removeVoiceRoute('blt sandwich');
+            removeVoiceRoute('club sandwich');
+            removeVoiceRoute('caprese sandwich');
+        }
+    }, []);
 
     return (
     <>

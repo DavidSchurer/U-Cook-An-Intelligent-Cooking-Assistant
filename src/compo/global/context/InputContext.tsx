@@ -9,18 +9,79 @@ import Image from 'next/image';
 import useSound from 'use-sound';
 import { convertNumbersInPhrase } from 'util/numToWorded';
 
-const calculateLikelihood = (target: string, input: string)=>{
+// Function to calculate Levenshtein distance
+function levenshtein(a, b) {
+    const matrix = [];
+    
+    // increment along the first column of each row
+    for (let i = 0; i <= b.length; i++) {
+      matrix[i] = [i];
+    }
+  
+    // increment each column in the first row
+    for (let j = 0; j <= a.length; j++) {
+      matrix[0][j] = j;
+    }
+  
+    // Fill in the rest of the matrix
+    for (let i = 1; i <= b.length; i++) {
+      for (let j = 1; j <= a.length; j++) {
+        if (b.charAt(i - 1) === a.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            Math.min(
+              matrix[i][j - 1] + 1, // insertion
+              matrix[i - 1][j] + 1  // deletion
+            )
+          );
+        }
+      }
+    }
+  
+    return matrix[b.length][a.length];
+  }
+  
+  // Function to calculate word similarity based on Levenshtein distance
+  function wordSimilarity(word1, word2) {
+    const maxLen = Math.max(word1.length, word2.length);
+    return (maxLen - levenshtein(word1, word2)) / maxLen;
+  }
+
+// Function to calculate the likelihood based on word similarity
+function calculateLikelihood2(target, input) {
+    const targetWords = target.split(' ');
+    const inputWords = input.split(' ');
+  
+    let totalSimilarity = 0;
+  
+    targetWords.forEach(targetWord => {
+      let maxSimilarity = 0;
+      inputWords.forEach(inputWord => {
+        const similarity = wordSimilarity(targetWord, inputWord);
+        if (similarity > maxSimilarity) {
+          maxSimilarity = similarity;
+        }
+      });
+      totalSimilarity += maxSimilarity;
+    });
+  
+    return totalSimilarity / targetWords.length;
+  }
+
+  function calculateLikelihood(target, input) {
     // Example likelihood function: string similarity using Jaccard index
     const targetSet = new Set(target.split(' '));
     const inputSet = new Set(input.split(' '));
     const intersection = new Set([...targetSet].filter(x => inputSet.has(x)));
     const union = new Set([...targetSet, ...inputSet]);
     return intersection.size / union.size;
-}
+  }
 
 const THRESHOLD = 0;
 
-const findMaxIndexes = (arr: number[]) => {
+const findMaxIndexes = (arr: number[], threshold: number) => {
     let max = -Infinity;
     let maxIndexes = [];
     for (let i = 0; i < arr.length; i++) {
@@ -31,16 +92,25 @@ const findMaxIndexes = (arr: number[]) => {
             maxIndexes.push(i);
         }
     }
-    if(max < THRESHOLD) return [];
-    return maxIndexes;
+    if(max < threshold) return {
+        max,
+        maxIndexes: []
+    };
+    return {max, maxIndexes};
 }
 
 const determineCommand = (targetPhrase: string, inputPhrases: string[])=>{
 
-    const weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
-    console.log(weights);
-    let maxIndexes = findMaxIndexes(weights);
-    console.log(maxIndexes);
+    let weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
+    console.log('weights',weights);
+    let maxIndexesCompo = findMaxIndexes(weights, 0);
+    if(maxIndexesCompo.max == 0){
+        weights = inputPhrases.map(phrase => calculateLikelihood2(targetPhrase, phrase));
+        console.log('weights2',weights);
+        maxIndexesCompo = findMaxIndexes(weights, 0.3);
+    }
+    let maxIndexes = maxIndexesCompo.maxIndexes;
+    console.log('maxIndexes',maxIndexes);
 
     return maxIndexes.map(index => inputPhrases[index]);
 }
@@ -129,8 +199,20 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         visual: "Help"
     }
 
+    const backRoute = {
+        feedback: ['Going back...'],
+        callback: ()=>{window.history.back()},
+        visual: "Back"
+    }
+
     useEffect(()=>{
         addVoiceRoute('help', helpRoute.feedback, helpRoute.callback, helpRoute);
+        addVoiceRoute('back', backRoute.feedback, backRoute.callback, backRoute);
+
+        return ()=>{
+            removeVoiceRoute('help');
+            removeVoiceRoute('back');
+        }
     }, []);
 
     const processTranscript = (transcript: string)=>{
