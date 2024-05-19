@@ -33,3 +33,40 @@
 .WelcomePopUp button:hover {
     background-color: rgba(115, 114, 114, 0.8);
 }
+
+.PastaPage {
+    background-color: gray;
+    border-radius: 10px;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 80%;
+    color: white;
+}
+
+.PastaPage ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.PastaPage button {
+    background-color: rgb(103, 99, 99);
+    color: white;
+    border: white;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.PastaPage li {
+    margin-bottom: 10px;
+}
+
+.PastaPage button:hover {
+    background-color: rgba(115, 114, 114, 0.8);
+}
