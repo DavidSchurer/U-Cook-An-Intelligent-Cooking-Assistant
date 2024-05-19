@@ -39,11 +39,15 @@ export default function Home() {
             <div className={styles.UCookHomePage}>
 
               <div className={styles.WelcomePopUp}>
-                <p>Welcome to the U-Cook Virtual Cooking Assistant! <br/><br/>
-                  This application strives to help you learn to cook with friends and family while using voice recognition to <br/>
-                  effortlessly browse through different recipes and cookbooks! <br/><br/>
-                  To start cooking please press continue!
+                <p>Welcome to the U-Cook Virtual Cooking Assistant!</p>
+                <p>This application strives to help you learn to cook with friends and family while using voice recognition to
+                  effortlessly browse through different recipes and cookbooks!
                 </p>
+                <hr/>
+                <p>To use the voice assistant, say &quot;Hi Cook&quot; and then your request.</p>
+                <p>To list all available commands for the current page, say &quot;Help&quot; to the voice assistant!</p>
+                <hr/>
+                <p>To start cooking, press continue or say &quot;Hi Cook, Press Continue&quot;!</p>
 
                 <button ref={continueButtonRef} onClick={handleContinueClick} data-continue-button><strong>Continue</strong></button>
               </div>
