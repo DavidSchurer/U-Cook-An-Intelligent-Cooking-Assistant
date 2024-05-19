@@ -16,7 +16,7 @@ export default function useAudio(soundPath) {
     audioRef.current = audio;
 
     return () => audio.unload();
-  }, [ soundPath ]);
+  }, [ hasInteracted, soundPath ]);
 
   return () => audioRef.current?.play();
 }

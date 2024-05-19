@@ -125,7 +125,7 @@ type VoiceRouteProps = {
 }
 
 const sanitizeTranscript = (transcript: string) => {
-    return convertNumbersInPhrase(transcript.toLowerCase());
+    return convertNumbersInPhrase(transcript.toLowerCase()).replace(/[^a-zA-Z0-9 ]/g, '');
 }
 
 export const InputContext = createContext<InputAPI | null>(null);
@@ -139,6 +139,8 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
     
     const [voiceToggle, setVoiceToggle] = useState(true);
+
+    const [sanitizedTranscript, setSanitizedTranscript] = useState('');
 
     const [commandTranscript, setCommandTranscript] = useState('');
 
@@ -211,6 +213,15 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         callback: ()=>{setVoiceToggle(false)},
         visual: "Mute"
     }
+
+    useEffect(()=>{
+
+        let sanitizedSample = sanitizeTranscript(transcript);
+        if(sanitizedSample !== sanitizedTranscript) {
+            setSanitizedTranscript(sanitizedSample);
+        };
+
+    }, [transcript]);
 
     useEffect(()=>{
         addVoiceRoute('help', helpRoute.feedback, helpRoute.callback, helpRoute);
@@ -324,11 +335,11 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
-        if (transcript) {
-            processPassiveTranscript(transcript);
-            console.log('Transcript:',transcript);
+        if (sanitizedTranscript) {
+            processPassiveTranscript(sanitizedTranscript);
+            console.log('Transcript:',sanitizedTranscript);
         }
-    }, [transcript]);
+    }, [sanitizedTranscript]);
 
     useEffect(() => {
 
@@ -337,14 +348,15 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         clearTimeout(voiceTimerRef.current);
         voiceTimerRef.current = setTimeout(()=>{
 
-            if(!assistantListening) return;
-            setAssistantListening(false);
-
             if(!assistantFeedback && extractTranscript(transcript) === ''){
                 audioFail();
+                setAssistantListening(false);
                 return;
             }
             resetTranscript();
+
+            if(!assistantListening) return;
+            setAssistantListening(false);
 
             audioProcess();
 
@@ -371,7 +383,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             startCloseTimer();
 
         }, extractTranscript(transcript)=='' ? 5000 : 2000);
-    }, [transcript]);
+    }, [sanitizedTranscript]);
 
     const api = {
         transcript,
