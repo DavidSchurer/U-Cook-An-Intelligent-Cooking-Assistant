@@ -3,19 +3,19 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
 
-export default function Pasta() {
+export default function Soups() {
     const router = useRouter();
 
-    // Sample data for pasta recipes
-    const pastaRecipes = [
-        { id: '1', name: 'Spaghetti Carbonara', description: 'Creamy Italian classic with eggs, cheese, and bacon.' },
-        { id: '2', name: 'Penne Arrabbiata', description: 'Spicy tomato sauce with garlic, tomatoes, and red chili peppers.' },
-        { id: '3', name: 'Fettuccine Alfredo', description: 'A rich sauce of butter, cream, and Parmesan cheese.' }
+    // Sample data for soup recipes
+    const soupRecipes = [
+        { id: 'tomato-basil-soup', name: 'Tomato Basil Soup', description: 'This soup blends ripe tomatoes with aromatic basil and other seasonings and is served with a garnish of fresh basil.' },
+        { id: 'chicken-noodle-soup', name: 'Chicken Noodle Soup', description: 'Chicken noodle soup features tender chicken, hearty vegetables, and noodles simmered in broth.' },
+        { id: 'minestrone-soup', name: 'Minestrone Soup', description: 'An italian favorite, minestrone soup comes packed with vegetables, beans, pasta, and herbs simmered in tomato-based broth.' }
     ];
 
     // Function to handle navigation to the detailed recipe page
     const handleSelectRecipe = (id: string) => {
-        router.push(`/recipes/pasta/${id}`);
+        router.push(`/recipes/soups/${id}`);
     }
 
     return (
@@ -26,10 +26,10 @@ export default function Pasta() {
             
         </div>
         </main>
-        <div className={styles.PastaPage}>
-            <h1>Pasta Recipes</h1>
+        <div className={styles.SoupsPage}>
+            <h1>Soup Recipes</h1>
             <ul>
-                {pastaRecipes.map((recipe) => (
+                {soupRecipes.map((recipe) => (
                     <li key={recipe.id} className={styles.recipeItem}>
                         <button onClick={() => handleSelectRecipe(recipe.id)}>
                             <h2>{recipe.name}</h2>

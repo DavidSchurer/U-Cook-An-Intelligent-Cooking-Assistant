@@ -3,19 +3,19 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
 
-export default function Pasta() {
+export default function Sandwiches() {
     const router = useRouter();
 
-    // Sample data for pasta recipes
-    const pastaRecipes = [
-        { id: '1', name: 'Spaghetti Carbonara', description: 'Creamy Italian classic with eggs, cheese, and bacon.' },
-        { id: '2', name: 'Penne Arrabbiata', description: 'Spicy tomato sauce with garlic, tomatoes, and red chili peppers.' },
-        { id: '3', name: 'Fettuccine Alfredo', description: 'A rich sauce of butter, cream, and Parmesan cheese.' }
+    // Sample data for sandwich recipes
+    const sandwichRecipes = [
+        { id: 'blt-sandwich', name: 'BLT Sandwich', description: 'This sandwich combines crispy bacon, fresh lettuce, and tomatoes with mayo and seasoning.' },
+        { id: 'club-sandwich', name: 'Club Sandwich', description: 'This sandwich comes with layers of turkey, bacon, lettuce, tomato, and mayonnaise between toasted bread.' },
+        { id: 'caprese-sandwich', name: 'Caprese Sandwich', description: 'Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze or olive oil' }
     ];
 
     // Function to handle navigation to the detailed recipe page
     const handleSelectRecipe = (id: string) => {
-        router.push(`/recipes/pasta/${id}`);
+        router.push(`/recipes/sandwiches/${id}`);
     }
 
     return (
@@ -26,10 +26,10 @@ export default function Pasta() {
             
         </div>
         </main>
-        <div className={styles.PastaPage}>
-            <h1>Pasta Recipes</h1>
+        <div className={styles.SandwichesPage}>
+            <h1>Sandwich Recipes</h1>
             <ul>
-                {pastaRecipes.map((recipe) => (
+                {sandwichRecipes.map((recipe) => (
                     <li key={recipe.id} className={styles.recipeItem}>
                         <button onClick={() => handleSelectRecipe(recipe.id)}>
                             <h2>{recipe.name}</h2>
