@@ -79,8 +79,6 @@ function calculateLikelihood2(target, input) {
     return intersection.size / union.size;
   }
 
-const THRESHOLD = 0;
-
 const findMaxIndexes = (arr: number[], threshold: number) => {
     let max = -Infinity;
     let maxIndexes = [];
@@ -99,15 +97,28 @@ const findMaxIndexes = (arr: number[], threshold: number) => {
     return {max, maxIndexes};
 }
 
-const determineCommand = (targetPhrase: string, inputPhrases: string[])=>{
+const findSensitive = (map: Map<string,VoiceRouteProps>)=>{
+    let sensitive = false;
+    map.forEach((value, key)=>{
+        if(value.sensitive) sensitive = true;
+    });
+    return sensitive;
+
+}
+
+const determineCommand = (voiceRoutes: Map<string,VoiceRouteProps>, targetPhrase: string, inputPhrases: string[])=>{
 
     let weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
     console.log('weights',weights);
     let maxIndexesCompo = findMaxIndexes(weights, 0);
-    if(maxIndexesCompo.max == 0){
+    let sensitive = findSensitive(voiceRoutes);
+    if(maxIndexesCompo.max == 0 || sensitive){
         weights = inputPhrases.map(phrase => calculateLikelihood2(targetPhrase, phrase));
         console.log('weights2',weights);
         maxIndexesCompo = findMaxIndexes(weights, 0.3);
+    }else{
+        let prospectiveWeights = inputPhrases.map(phrase => calculateLikelihood2(targetPhrase, phrase));
+        console.log('prospectiveWeights2',prospectiveWeights);
     }
     let maxIndexes = maxIndexesCompo.maxIndexes;
     console.log('maxIndexes',maxIndexes);
@@ -134,6 +145,7 @@ type VoiceRouteProps = {
     feedback: string[]|(()=>string[]);
     callback: VoiceRoute;
     visual?: string;
+    sensitive?: boolean;
 }
 
 const sanitizeTranscript = (transcript: string) => {
@@ -162,11 +174,14 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const addVoiceRoute = (route: string, feedback: string|string[]|(()=>string[]), callback: VoiceRoute, args: any = {}) => {
         if(typeof feedback === 'string') feedback = [feedback];
-        const props: VoiceRouteProps = {feedback, callback, visual: args.visual};
+        const props: VoiceRouteProps = {feedback, callback, visual: args.visual, sensitive: args.sensitive};
         voiceRoutes.current.set(sanitizeTranscript(route), props);
     }
 
     const removeVoiceRoute = (route: string) => {
+
+        if(!voiceRoutes.current.has(sanitizeTranscript(route))) return;
+
         voiceRoutes.current.delete(sanitizeTranscript(route));
     }
     
@@ -230,7 +245,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
         if(voiceRoutes.current.size === 0) return ["I cannot process your request at this time."];
 
-        const matches: string[] = determineCommand(transcript, Array.from(voiceRoutes.current.keys()));
+        const matches: string[] = determineCommand(voiceRoutes.current, transcript, Array.from(voiceRoutes.current.keys()));
 
         if(matches.length === 0) return ["I don't understand what you mean."];
 
