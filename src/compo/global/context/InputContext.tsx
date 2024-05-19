@@ -7,6 +7,44 @@ import microphoneImage from 'app/images/microphoneImage.png';
 import Image from 'next/image';
 
 import useSound from 'use-sound';
+import { convertNumbersInPhrase } from 'util/numToWorded';
+
+const calculateLikelihood = (target: string, input: string)=>{
+    // Example likelihood function: string similarity using Jaccard index
+    const targetSet = new Set(target.split(' '));
+    const inputSet = new Set(input.split(' '));
+    const intersection = new Set([...targetSet].filter(x => inputSet.has(x)));
+    const union = new Set([...targetSet, ...inputSet]);
+    return intersection.size / union.size;
+}
+
+const THRESHOLD = 0.1;
+
+const findMaxIndexes = (arr: number[]) => {
+    let max = -Infinity;
+    let maxIndexes = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+            maxIndexes = [i];
+        } else if (arr[i] === max) {
+            maxIndexes.push(i);
+        }
+    }
+    if(max < THRESHOLD) return [];
+    return maxIndexes;
+}
+
+const determineCommand = (targetPhrase: string, inputPhrases: string[])=>{
+
+    const weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
+    console.log(weights);
+    let maxIndexes = findMaxIndexes(weights);
+    console.log(maxIndexes);
+
+    return maxIndexes.map(index => inputPhrases[index]);
+}
+
 
 interface InputAPI {
     transcript: string;
@@ -16,11 +54,21 @@ interface InputAPI {
     startListening: ()=>void;
     stopListening: ()=>void;
 
-    addVoiceRoute: (route: string, callback: ()=>void)=>void;
+    addVoiceRoute: (route: string, feedback: string, callback: ()=>void, args?: any)=>void;
     removeVoiceRoute: (route: string)=>void;
 }
 
 type VoiceRoute = ()=>void;
+
+type VoiceRouteProps = {
+    feedback: string;
+    callback: VoiceRoute;
+    visual?: string;
+}
+
+const sanitizeTranscript = (transcript: string) => {
+    return convertNumbersInPhrase(transcript.toLowerCase());
+}
 
 export const InputContext = createContext<InputAPI | null>(null);
 
@@ -38,16 +86,17 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [assistantListening, setAssistantListening] = useState(false);
     const [assistantFeedback, setAssistantFeedback] = useState(false);
-    const [assistantMessage, setAssistantMessage] = useState('');
+    const [assistantMessage, setAssistantMessage] = useState([]);
 
-    const voiceRoutes = useRef<Map<string,VoiceRoute>>(new Map());
+    const voiceRoutes = useRef<Map<string,VoiceRouteProps>>(new Map());
 
-    const addVoiceRoute = (route: string, callback: VoiceRoute) => {
-        voiceRoutes.current.set(route, callback);
+    const addVoiceRoute = (route: string, feedback: string, callback: VoiceRoute, args: any = {}) => {
+        const props: VoiceRouteProps = {feedback, callback, visual: args.visual};
+        voiceRoutes.current.set(sanitizeTranscript(route), props);
     }
 
     const removeVoiceRoute = (route: string) => {
-        voiceRoutes.current.delete(route);
+        voiceRoutes.current.delete(sanitizeTranscript(route));
     }
     
     const startListening = () => {
@@ -69,15 +118,27 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
         // add voice processing data here
 
-        if(voiceRoutes.current.size == 1){
-            const callback = voiceRoutes.current.get('continue');
-            if(callback){
-                callback();
-            }
-            return "I have successfully performed the command.";
-        }
+        if(voiceRoutes.current.size === 0) return ["I cannot process your request at this time."];
 
-        return "I don't understand what you mean."
+        const matches: string[] = determineCommand(transcript, Array.from(voiceRoutes.current.keys()));
+
+        if(matches.length === 0) return ["I don't understand what you mean."];
+
+        if(matches.length > 1){
+            let ambiguousOutput = ["Which of the following do you mean?"]
+            for(let i = 0; i < matches.length; i++){
+                let visual = voiceRoutes.current.get(matches[i])?.visual || matches[i];
+                ambiguousOutput.push(`- ${visual}`);
+            }
+            return ambiguousOutput;
+        };
+
+        const bestMatch = matches[0];
+
+        const bestProps = voiceRoutes.current.get(bestMatch);
+
+        bestProps?.callback();
+        return [bestProps?.feedback];
     }
 
     const processPassiveTranscript = (transcript: string)=>{
@@ -143,19 +204,6 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         synth.speak(utterance);
     }
 
-    useEffect(()=>{
-
-        const onWindowLoad = () => {
-            // startListening();
-        }
-
-        window.addEventListener('load', onWindowLoad);
-
-        return () => {
-            window.removeEventListener('load', onWindowLoad);
-        }
-    }, []);
-
     useEffect(() => {
         if (transcript) {
             processPassiveTranscript(transcript);
@@ -179,15 +227,25 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
             setAssistantFeedback(true);
             
-            const response = processTranscript(transcript);
-            speakText(response);
+            const response = processTranscript(sanitizeTranscript(transcript));
+            speakText(response.join(' '));
             setAssistantMessage(response);
 
-            clearTimeout(feedbackTimerRef.current);
-            feedbackTimerRef.current = setTimeout(()=>{
-                setCommandTranscript("");
-                setAssistantFeedback(false);
-            }, 5000);
+            const startCloseTimer = ()=>{
+                clearTimeout(feedbackTimerRef.current);
+                feedbackTimerRef.current = setTimeout(()=>{
+
+                    if(window.speechSynthesis.speaking){
+                        startCloseTimer();
+                        return;
+                    }
+
+                    setCommandTranscript("");
+                    setAssistantFeedback(false);
+                }, 5000);
+            };
+
+            startCloseTimer();
 
         }, transcript=='' ? 5000 : 2000);
     }, [transcript]);
@@ -220,7 +278,12 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
                     </div>
                     {commandTranscript}...
                     <div className={`${styles.response} ${assistantFeedback ? styles.visible : ''}`}>
-                        <p>{assistantMessage}</p>
+                        <p>
+                            {assistantMessage.map((line,i)=>
+                                <span key={i}>{line}<br/></span>
+                            )}
+                        </p>
+
                     </div>
                 </div>
             </div>

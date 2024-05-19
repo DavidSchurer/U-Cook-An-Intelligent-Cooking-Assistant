@@ -14,12 +14,6 @@ export default function Home() {
       router.push("/contacts-page");
     };
 
-    const [voiceRecognition, setVoiceRecognition] = useState(true);
-
-    const toggleVoiceRecognition = () => {
-        setVoiceRecognition(prevState => !prevState);
-    };
-
     const continueButtonRef = useRef<HTMLButtonElement | null>(null);
 
     useEffect(()=>{
@@ -30,7 +24,7 @@ export default function Home() {
         }
       }
 
-      addVoiceRoute('continue', pressContinue);
+      addVoiceRoute('continue', 'Okay, I have pressed Continue for you.', pressContinue);
 
       return () => {
         removeVoiceRoute('continue');
