@@ -18,7 +18,7 @@ const calculateLikelihood = (target: string, input: string)=>{
     return intersection.size / union.size;
 }
 
-const THRESHOLD = 0.1;
+const THRESHOLD = 0;
 
 const findMaxIndexes = (arr: number[]) => {
     let max = -Infinity;
@@ -54,14 +54,14 @@ interface InputAPI {
     startListening: ()=>void;
     stopListening: ()=>void;
 
-    addVoiceRoute: (route: string, feedback: string, callback: ()=>void, args?: any)=>void;
+    addVoiceRoute: (route: string, feedback: string|string[]|(()=>string[]), callback: ()=>void, args?: any)=>void;
     removeVoiceRoute: (route: string)=>void;
 }
 
 type VoiceRoute = ()=>void;
 
 type VoiceRouteProps = {
-    feedback: string;
+    feedback: string[]|(()=>string[]);
     callback: VoiceRoute;
     visual?: string;
 }
@@ -90,7 +90,8 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const voiceRoutes = useRef<Map<string,VoiceRouteProps>>(new Map());
 
-    const addVoiceRoute = (route: string, feedback: string, callback: VoiceRoute, args: any = {}) => {
+    const addVoiceRoute = (route: string, feedback: string|string[]|(()=>string[]), callback: VoiceRoute, args: any = {}) => {
+        if(typeof feedback === 'string') feedback = [feedback];
         const props: VoiceRouteProps = {feedback, callback, visual: args.visual};
         voiceRoutes.current.set(sanitizeTranscript(route), props);
     }
@@ -114,7 +115,34 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const secondWords = ['cook', 'chef'];
 
+    const helpRoute = {
+        feedback: ()=>{
+            let helpList = ["Here are the commands you can say:"];
+            voiceRoutes.current.forEach((value, key)=>{
+                helpList.push(`- ${value.visual || key}`);
+            });
+            helpList.push('');
+            helpList.push('Tip: your commands only need to be similar enough to be recognized.')
+            return helpList;
+        },
+        callback: ()=>{},
+        visual: "Help"
+    }
+
+    useEffect(()=>{
+        addVoiceRoute('help', helpRoute.feedback, helpRoute.callback, helpRoute);
+    }, []);
+
     const processTranscript = (transcript: string)=>{
+
+        if(transcript=='help'){
+            let helpList = ["Here are the commands you can say:"];
+            voiceRoutes.current.forEach((value, key)=>{
+                helpList.push(`- ${value.visual || key}`);
+            });
+            helpList.push('Tip: your commands only need to be similar enough to be recognized.')
+            return helpList;
+        }
 
         // add voice processing data here
 
@@ -138,7 +166,16 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         const bestProps = voiceRoutes.current.get(bestMatch);
 
         bestProps?.callback();
-        return [bestProps?.feedback];
+
+        let returnFeedback;
+
+        if(typeof bestProps?.feedback === 'function'){
+            returnFeedback = bestProps?.feedback();
+        } else {
+            returnFeedback = bestProps?.feedback;
+        }
+
+        return returnFeedback;
     }
 
     const processPassiveTranscript = (transcript: string)=>{
@@ -163,6 +200,10 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         //     }
         // }
 
+        if(assistantListening) {
+            setCommandTranscript(transcript);
+        }
+
         if(words.length < 2) return;
 
         const lastWord = words[words.length-1].toLowerCase().replace(/[^\w\s]|_/g, '');
@@ -170,14 +211,12 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log([secondLastWord, lastWord]);
 
-        if(assistantListening) {
-            setCommandTranscript(transcript);
-        }
-
         if(firstWords.includes(secondLastWord) && secondWords.includes(lastWord)){
             resetTranscript();
             setAssistantListening(true);
             setAssistantFeedback(false);
+            setAssistantMessage([]);
+            window.speechSynthesis.cancel();
             playWake();
             clearTimeout(voiceTimerRef.current);
             clearTimeout(feedbackTimerRef.current);
