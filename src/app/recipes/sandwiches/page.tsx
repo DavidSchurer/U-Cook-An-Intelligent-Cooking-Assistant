@@ -22,13 +22,13 @@ export default function Sandwiches() {
     }
 
     useEffect(() => {
-        addVoiceRoute('blt sandwich', 'Okay, I have selected BLT Sandwich.', () => handleSelectRecipe('blt-sandwich'), {
+        addVoiceRoute('blt sandwich', 'Okay, I have selected BLT Sandwich.', () => handleSelectRecipe('BLT'), {
             visual: 'Select BLT Sandwich'
         });
-        addVoiceRoute('club sandwich', 'Okay, I have selected Club Sandwich.', () => handleSelectRecipe('club-sandwich'), {
+        addVoiceRoute('club sandwich', 'Okay, I have selected Club Sandwich.', () => handleSelectRecipe('Club'), {
             visual: 'Select Club Sandwich'
         });
-        addVoiceRoute('caprese sandwich', 'Okay, I have selected Caprese Sandwich.', () => handleSelectRecipe('caprese-sandwich'), {
+        addVoiceRoute('caprese sandwich', 'Okay, I have selected Caprese Sandwich.', () => handleSelectRecipe('Caprese'), {
             visual: 'Select Caprese Sandwich'
         });
 
