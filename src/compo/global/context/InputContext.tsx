@@ -336,8 +336,8 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (sanitizedTranscript) {
-            processPassiveTranscript(sanitizedTranscript);
-            console.log('Transcript:',sanitizedTranscript);
+            processPassiveTranscript(transcript);
+            console.log('Transcript:',transcript);
         }
     }, [sanitizedTranscript]);
 
