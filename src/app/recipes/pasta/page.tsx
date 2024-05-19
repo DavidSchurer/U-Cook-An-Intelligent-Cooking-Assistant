@@ -9,8 +9,8 @@ export default function Pasta() {
     // Sample data for pasta recipes
     const pastaRecipes = [
         { id: 'Carbonara', name: 'Spaghetti Carbonara', description: 'Creamy Italian classic with eggs, cheese, and bacon.' },
-        { id: '2', name: 'Penne Arrabbiata', description: 'Spicy tomato sauce with garlic, tomatoes, and red chili peppers.' },
-        { id: '3', name: 'Fettuccine Alfredo', description: 'A rich sauce of butter, cream, and Parmesan cheese.' }
+        { id: 'Arrabbiata', name: 'Penne Arrabbiata', description: 'Spicy tomato sauce with garlic, tomatoes, and red chili peppers.' },
+        { id: 'Alfredo', name: 'Fettuccine Alfredo', description: 'A rich sauce of butter, cream, and Parmesan cheese.' }
     ];
 
     // Function to handle navigation to the detailed recipe page
