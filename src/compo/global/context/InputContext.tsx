@@ -383,6 +383,12 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <InputContext.Provider value={api}>
+            <header className={styles.header}>
+                <Image className={styles.inlineUCook} src="ucook-inline.svg" alt="U-Cook" width={40} height={40}/>
+                <h1>
+                    <strong className={styles.title}>U-COOK:</strong> <span className={styles.desc}>An Intelligent Cooking Assistant for <span className={styles.em}>U</span> to <span className={styles.em}>COOK</span></span>
+                </h1>
+            </header>
             {children}
             <div className={styles.microphoneContainer}>
                 <div className={styles.MicrophoneIcon}>

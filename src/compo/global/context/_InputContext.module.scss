@@ -1,5 +1,39 @@
 @import 'styles/variables';
 
+.header {
+    background-color: gray;
+    color: white;
+    padding: 10px;
+
+    .inlineUCook {
+        filter: invert(1);
+        margin-right: 0.1em;
+    }
+
+    h1 {
+        display: inline-block;
+        height: 40px;
+        line-height: 1.5;
+        margin: 0;
+        vertical-align: top;
+
+        .title {
+            font-weight: bold;
+            margin-right: 0.2em;
+        }
+
+        .desc {
+            color: rgb(210, 210, 210);
+
+            .em {
+                color: white;
+                font-weight: bold;
+            }
+        }
+    }
+
+}
+
 .MicrophoneIcon{
     position: fixed;
     bottom: 20px;
