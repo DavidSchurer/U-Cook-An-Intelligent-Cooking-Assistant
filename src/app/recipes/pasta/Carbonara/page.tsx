@@ -55,9 +55,9 @@ export default function Carbonara() {
                         <li><h3>Toss the pasta with pancetta or bacon:</h3>
                             When the pasta is al dente (still a little firm, not mushy), use tongs to move it to the bowl with the bacon and garlic. Let it be dripping wet. Reserve some of the pasta water.
 
-                            Move the pasta from the pot to the bowl quickly, as you want the pasta to be hot. It's the heat of the pasta that will heat the eggs sufficiently to create a creamy sauce.
+                            Move the pasta from the pot to the bowl quickly, as you want the pasta to be hot. It&apos;s the heat of the pasta that will heat the eggs sufficiently to create a creamy sauce.
 
-                            Toss everything to combine, allowing the pasta to cool just enough so that it doesn't make the eggs curdle when you mix them in. (That's the tricky part.)</li>
+                            Toss everything to combine, allowing the pasta to cool just enough so that it doesn&apos;t make the eggs curdle when you mix them in. (That&apos;s the tricky part.)</li>
                         <li><h3>Add the beaten egg mixture:</h3>
                             Add the beaten eggs with cheese and toss quickly to combine once more. Add salt to taste. Add some pasta water back to the pasta to keep it from drying out.</li>
                         <li><h3>Serve:</h3>Serve at once with the rest of the parmesan and freshly ground black pepper. If you want, sprinkle with a little fresh chopped parsley.</li>

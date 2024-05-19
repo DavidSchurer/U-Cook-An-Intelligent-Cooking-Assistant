@@ -47,7 +47,7 @@ export default function GarlicParmesanChicken() {
                         </li>
                         <li>
                             <h3>Cook the chicken:</h3>
-                            Add olive oil and butter to a skillet over medium-high heat, and let the pan heat up for a few minutes. Cook the chicken for about 5-6 minutes per side or until it's nicely seared and cooked through. Transfer chicken to a plate and loosely tent it with foil to keep it warm.
+                            Add olive oil and butter to a skillet over medium-high heat, and let the pan heat up for a few minutes. Cook the chicken for about 5-6 minutes per side or until it&apos;s nicely seared and cooked through. Transfer chicken to a plate and loosely tent it with foil to keep it warm.
                         </li>
                         <li>
                             <h3>Make the sauce:</h3>
@@ -55,7 +55,7 @@ export default function GarlicParmesanChicken() {
                         </li>
                         <li>
                             <h3>Finish the sauce:</h3>
-                            Stir in the cream and let it bubble gently for a few minutes until it's thickened to your desired consistency. Take the skillet off the heat and stir in the Parmesan until it has melted into the sauce.
+                            Stir in the cream and let it bubble gently for a few minutes until it&apos;s thickened to your desired consistency. Take the skillet off the heat and stir in the Parmesan until it has melted into the sauce.
                         </li>
                         <li>
                             <h3>Combine and serve:</h3>
