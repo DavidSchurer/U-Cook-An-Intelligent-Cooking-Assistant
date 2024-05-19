@@ -60,7 +60,7 @@ export default function Carbonara() {
                             Toss everything to combine, allowing the pasta to cool just enough so that it doesn't make the eggs curdle when you mix them in. (That's the tricky part.)</li>
                         <li><h3>Add the beaten egg mixture:</h3>
                             Add the beaten eggs with cheese and toss quickly to combine once more. Add salt to taste. Add some pasta water back to the pasta to keep it from drying out.</li>
-                        <li>Serve at once with the rest of the parmesan and freshly ground black pepper. If you want, sprinkle with a little fresh chopped parsley.</li>
+                        <li><h3>Serve:</h3>Serve at once with the rest of the parmesan and freshly ground black pepper. If you want, sprinkle with a little fresh chopped parsley.</li>
                     </ol>
                 </div>
             </div>
