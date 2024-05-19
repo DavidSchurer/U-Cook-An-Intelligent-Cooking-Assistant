@@ -186,7 +186,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const firstWords = ['a', 'me', 'i', 'hi', 'hey', 'hello', 'high', 'hay']
 
-    const secondWords = ['cook', 'chef'];
+    const secondWords = ['cook'];
 
     const helpRoute = {
         feedback: ()=>{
