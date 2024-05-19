@@ -8,9 +8,9 @@ export default function Sandwiches() {
 
     // Sample data for sandwich recipes
     const sandwichRecipes = [
-        { id: 'blt-sandwich', name: 'BLT Sandwich', description: 'This sandwich combines crispy bacon, fresh lettuce, and tomatoes with mayo and seasoning.' },
-        { id: 'club-sandwich', name: 'Club Sandwich', description: 'This sandwich comes with layers of turkey, bacon, lettuce, tomato, and mayonnaise between toasted bread.' },
-        { id: 'caprese-sandwich', name: 'Caprese Sandwich', description: 'Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze or olive oil' }
+        { id: 'BLT', name: 'BLT Sandwich', description: 'This sandwich combines crispy bacon, fresh lettuce, and tomatoes with mayo and seasoning.' },
+        { id: 'Club', name: 'Club Sandwich', description: 'This sandwich comes with layers of turkey, bacon, lettuce, tomato, and mayonnaise between toasted bread.' },
+        { id: 'Caprese', name: 'Caprese Sandwich', description: 'Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze or olive oil' }
     ];
 
     // Function to handle navigation to the detailed recipe page
