@@ -137,7 +137,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     const audioProcess = useAudio('/sounds/cook_process.mp3');
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
-
+    
     const [voiceToggle, setVoiceToggle] = useState(true);
 
     const [commandTranscript, setCommandTranscript] = useState('');
