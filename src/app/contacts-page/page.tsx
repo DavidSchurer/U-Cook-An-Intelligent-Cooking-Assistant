@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from "next/image";
 import styles from "./page.module.scss";
 import { useState } from 'react';
@@ -9,12 +9,79 @@ import { useRouter } from "next/navigation";
 export default function ContactsPage() {
 
     const router = useRouter();
-    const input = useInput();
+    const {addVoiceRoute, removeVoiceRoute} = useInput();
   
       const handleContinueClick = () => {
         router.push("/categories-page");
       };
 
+    const [option1Selected, setOption1Selected] = useState(false);
+    const [option2Selected, setOption2Selected] = useState(false);
+    const [option3Selected, setOption3Selected] = useState(false);
+    const [option4Selected, setOption4Selected] = useState(false);
+    
+    useEffect(()=>{
+
+      const selectOption1 = () => {
+        setOption1Selected(true);
+      }
+
+      const selectOption2 = () => {
+        setOption2Selected(true);
+      }
+
+      const selectOption3 = () => {
+        setOption3Selected(true);
+      }
+
+      const selectOption4 = () => {
+        setOption4Selected(true);
+      }
+
+      const deselectOption1 = () => {
+        setOption1Selected(false);
+      }
+
+      const deselectOption2 = () => {
+        setOption2Selected(false);
+      }
+
+      const deselectOption3 = () => {
+        setOption3Selected(false);
+      }
+
+      const deselectOption4 = () => {
+        setOption4Selected(false);
+      }
+
+      addVoiceRoute('select option 1', 'Okay, I have selected Option 1, David.', selectOption1, {
+        visual: 'Select Option 1'
+      });
+      addVoiceRoute('select option 2', 'Okay, I have selected Option 2, Ben.', selectOption2, {
+        visual: 'Select Option 2'
+      });
+      addVoiceRoute('select option 3', 'Okay, I have selected Option 3, Shivam.', selectOption3, {
+        visual: 'Select Option 3'
+      });
+      addVoiceRoute('select option 4', 'Okay, I have selected Option 4, Harshitha.', selectOption4, {
+        visual: 'Select Option 4'
+      });
+      
+      addVoiceRoute('deselect option 1', 'Okay, I have deselected Option 1, David.', deselectOption1, {
+        visual: 'De-select Option 1'
+      });
+      addVoiceRoute('deselect option 2', 'Okay, I have deselected Option 2, Ben.', deselectOption2, {
+        visual: 'De-select Option 2'
+      });
+      addVoiceRoute('deselect option 3', 'Okay, I have deselected Option 3, Shivam.', deselectOption3, {
+        visual: 'De-select Option 3'
+      });
+      addVoiceRoute('deselect option 4', 'Okay, I have deselected Option 4, Harshitha.', deselectOption4, {
+        visual: 'De-select Option 4'
+      });
+
+    }, []);
+    
 
     return (
           <main className={styles.main}>
@@ -24,12 +91,12 @@ export default function ContactsPage() {
 
             <div className={styles.ContactsPage}>
                 <h1>Please Choose From Your List of Contacts to Create Group Call:</h1>
-                <ul>
-                    <li>David</li>
-                    <li>Ben</li>
-                    <li>Shivam</li>
-                    <li>Harshitha</li>
-                </ul>
+                <ol>
+                    <li className={option1Selected ? styles.selected : ''}>David</li>
+                    <li className={option2Selected ? styles.selected : ''}>Ben</li>
+                    <li className={option3Selected ? styles.selected : ''}>Shivam</li>
+                    <li className={option4Selected ? styles.selected : ''}>Harshitha</li>
+                </ol>
                 <button onClick={handleContinueClick} data-continue-button><strong>Continue</strong></button>
             </div>
           </main>
