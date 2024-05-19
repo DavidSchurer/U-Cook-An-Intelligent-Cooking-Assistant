@@ -1,10 +1,13 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
+import { useInput } from 'compo/global/context/InputContext';
 
 export default function Soups() {
     const router = useRouter();
+
+    const { addVoiceRoute, removeVoiceRoute } = useInput();
 
     // Sample data for soup recipes
     const soupRecipes = [
@@ -17,6 +20,24 @@ export default function Soups() {
     const handleSelectRecipe = (id: string) => {
         router.push(`/recipes/soups/${id}`);
     }
+
+    useEffect(() => {
+        addVoiceRoute('tomato basil soup', 'Okay, I have selected Tomato Basil Soup.', () => handleSelectRecipe('tomato-basil-soup'), {
+            visual: 'Select Tomato Basil Soup'
+        });
+        addVoiceRoute('chicken noodle soup', 'Okay, I have selected Chicken Noodle Soup.', () => handleSelectRecipe('chicken-noodle-soup'), {
+            visual: 'Select Chicken Noodle Soup'
+        });
+        addVoiceRoute('minestrone soup', 'Okay, I have selected Minestrone Soup.', () => handleSelectRecipe('minestrone-soup'), {
+            visual: 'Select Minestrone Soup'
+        });
+
+        return () => {
+            removeVoiceRoute('tomato basil soup');
+            removeVoiceRoute('chicken noodle soup');
+            removeVoiceRoute('minestrone soup');
+        }
+    }, []);
 
     return (
     <>
