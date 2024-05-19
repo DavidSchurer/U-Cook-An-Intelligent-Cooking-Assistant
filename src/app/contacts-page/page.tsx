@@ -80,6 +80,17 @@ export default function ContactsPage() {
         visual: 'De-select Option 4'
       });
 
+      return () => {
+        removeVoiceRoute('select option 1');
+        removeVoiceRoute('select option 2');
+        removeVoiceRoute('select option 3');
+        removeVoiceRoute('select option 4');
+        removeVoiceRoute('deselect option 1');
+        removeVoiceRoute('deselect option 2');
+        removeVoiceRoute('deselect option 3');
+        removeVoiceRoute('deselect option 4');
+      }
+
     }, []);
     
 
