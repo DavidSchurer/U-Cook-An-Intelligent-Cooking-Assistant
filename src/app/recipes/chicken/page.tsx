@@ -3,19 +3,19 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
 
-export default function Soups() {
+export default function Chicken() {
     const router = useRouter();
 
-    // Sample data for soup recipes
-    const soupRecipes = [
-        { id: 'tomato-basil-soup', name: 'Tomato Basil Soup', description: 'This soup blends ripe tomatoes with aromatic basil and other seasonings and is served with a garnish of fresh basil.' },
-        { id: 'chicken-noodle-soup', name: 'Chicken Noodle Soup', description: 'Chicken noodle soup features tender chicken, hearty vegetables, and noodles simmered in broth.' },
-        { id: 'minestrone-soup', name: 'Minestrone Soup', description: 'An italian favorite, minestrone soup comes packed with vegetables, beans, pasta, and herbs simmered in tomato-based broth.' }
+    // Sample data for chicken recipes
+    const chickenRecipes = [
+        { id: 'lemon-herb-chicken', name: 'Grilled Lemon Herb Chicken', description: 'Juicy chicken marinated in zesty lemon and herbs, grilled to perfection for a fresh, flavorful dish.' },
+        { id: 'garlic-parmesan-chicken', name: 'Creamy Garlic Parmesan Chicken', description: 'Pan-seared chicken in a creamy garlic Parmesan sauce, rich and indulgent, perfect with pasta or veggies.' },
+        { id: 'honey-mustard-chicken', name: 'Honey Mustard Baked Chicken', description: 'Tender chicken thighs glazed in sweet honey mustard, baked to sticky perfection, a simple crowd-pleaser.' }
     ];
 
     // Function to handle navigation to the detailed recipe page
     const handleSelectRecipe = (id: string) => {
-        router.push(`/recipes/soups/${id}`);
+        router.push(`/recipes/chicken/${id}`);
     }
 
     return (
@@ -26,10 +26,10 @@ export default function Soups() {
             
         </div>
         </main>
-        <div className={styles.SoupsPage}>
-            <h1>Soup Recipes</h1>
+        <div className={styles.ChickenPage}>
+            <h1>Chicken Recipes</h1>
             <ul>
-                {soupRecipes.map((recipe) => (
+                {chickenRecipes.map((recipe) => (
                     <li key={recipe.id} className={styles.recipeItem}>
                         <button onClick={() => handleSelectRecipe(recipe.id)}>
                             <h2>{recipe.name}</h2>
