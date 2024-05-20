@@ -14,10 +14,6 @@ export default function MinestroneSoup() {
     return (
         <>
             <main className={styles.main}>
-                <div className={styles.UCookHomePage}>
-                    <h1>U-Cook: Virtual Cooking Assistant</h1>
-
-                </div>
             </main>
             <div className={styles.SoupsPage}>
                 <h1>Minestrone Soup</h1>

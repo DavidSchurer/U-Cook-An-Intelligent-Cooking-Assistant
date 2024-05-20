@@ -14,10 +14,6 @@ export default function TomatoBasilSoup() {
     return (
         <>
             <main className={styles.main}>
-                <div className={styles.UCookHomePage}>
-                    <h1>U-Cook: Virtual Cooking Assistant</h1>
-
-                </div>
             </main>
             <div className={styles.SoupsPage}>
                 <h1>Tomato Basil Soup</h1>

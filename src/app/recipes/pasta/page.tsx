@@ -42,10 +42,6 @@ export default function Pasta() {
     return (
     <>
        <main className={styles.main}>
-        <div className={styles.UCookHomePage}>
-            <h1>U-Cook: Virtual Cooking Assistant</h1>
-            
-        </div>
         </main>
         <div className={styles.PastaPage}>
             <h1>Pasta Recipes</h1>

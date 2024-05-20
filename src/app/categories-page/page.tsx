@@ -44,10 +44,6 @@ export default function CategoriesPage() {
     return (
         <>
          <main className={styles.main}>
-            <div className={styles.UCookHomePage}>
-               <h1> U-Cook: Virtual Cooking Assistant</h1>
-            </div>
-
             <div className={styles.CategoriesPage}>
                 <h1>Please Choose a Recipe Category:</h1>
                 <ul className = {styles ["horizontal-list"]}>

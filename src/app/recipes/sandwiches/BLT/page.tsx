@@ -9,10 +9,6 @@ export default function BLT() {
     return (
         <>
             <main className={styles.main}>
-                <div className={styles.UCookHomePage}>
-                    <h1>U-Cook: Virtual Cooking Assistant</h1>
-
-                </div>
             </main>
             <div className={styles.PastaPage}>
                 <h1>BLT Sandwich</h1>

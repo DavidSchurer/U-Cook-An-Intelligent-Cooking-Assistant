@@ -101,9 +101,6 @@ export default function ContactsPage() {
 
     return (
           <main className={styles.main}>
-            <div className={styles.UCookHomePage}>
-              <h1> U-Cook: Virtual Cooking Assistant</h1>
-            </div>
 
             <div className={styles.ContactsPage}>
                 <h1>Please Choose From Your List of Contacts to Create Group Call:</h1>
