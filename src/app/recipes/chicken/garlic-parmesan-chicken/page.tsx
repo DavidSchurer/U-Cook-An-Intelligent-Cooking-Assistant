@@ -64,6 +64,9 @@ export default function GarlicParmesanChicken() {
                         </li>
                     </ol>
                 </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
+                </div>
             </div>
         </>
     );
