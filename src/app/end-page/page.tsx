@@ -55,7 +55,7 @@ export default function Home() {
                       className={star <= rating ? styles.selectedStar : styles.star}
                       onClick={() => handleRatingClick(star)}
                     >
-                      ★ {star}
+                      ★
                     </span>
                   ))}
                 </div>

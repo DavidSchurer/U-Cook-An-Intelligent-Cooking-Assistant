@@ -34,3 +34,19 @@
 .WelcomePopUp button:hover {
     background-color: rgba(115, 114, 114, 0.8);
 }
+
+.rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.star, .selectedStar {
+    font-size: 2rem;
+    cursor: pointer;
+    margin: 0 0.2rem;
+}
+
+.selectedStar {
+    color: gold;
+}
