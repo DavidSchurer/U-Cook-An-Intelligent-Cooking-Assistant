@@ -66,18 +66,44 @@ export default function ContactsPage() {
       addVoiceRoute('select option 4', 'Okay, I have selected Option 4, Harshitha.', selectOption4, {
         visual: 'Select Option 4'
       });
+
+      addVoiceRoute('select david', 'Okay, I have selected Option 1, David.', selectOption1, {
+        visual: 'Select David'
+      });
+      addVoiceRoute('select ben', 'Okay, I have selected Option 2, Ben.', selectOption2, {
+        visual: 'Select Ben'
+      });
+      addVoiceRoute('select shivam', 'Okay, I have selected Option 3, Shivam.', selectOption3, {
+        visual: 'Select Shivam'
+      });
+      addVoiceRoute('select harshitha', 'Okay, I have selected Option 4, Harshitha.', selectOption4, {
+        visual: 'Select Harshitha'
+      });
       
-      addVoiceRoute('deselect option 1', 'Okay, I have deselected Option 1, David.', deselectOption1, {
+      addVoiceRoute('deselect option 1', 'Okay, I have de-selected Option 1, David.', deselectOption1, {
         visual: 'De-select Option 1'
       });
-      addVoiceRoute('deselect option 2', 'Okay, I have deselected Option 2, Ben.', deselectOption2, {
+      addVoiceRoute('deselect option 2', 'Okay, I have de-selected Option 2, Ben.', deselectOption2, {
         visual: 'De-select Option 2'
       });
-      addVoiceRoute('deselect option 3', 'Okay, I have deselected Option 3, Shivam.', deselectOption3, {
+      addVoiceRoute('deselect option 3', 'Okay, I have de-selected Option 3, Shivam.', deselectOption3, {
         visual: 'De-select Option 3'
       });
-      addVoiceRoute('deselect option 4', 'Okay, I have deselected Option 4, Harshitha.', deselectOption4, {
+      addVoiceRoute('deselect option 4', 'Okay, I have de-selected Option 4, Harshitha.', deselectOption4, {
         visual: 'De-select Option 4'
+      });
+
+      addVoiceRoute('deselect david', 'Okay, I have de-selected Option 1, David.', deselectOption1, {
+        visual: 'De-Select David'
+      });
+      addVoiceRoute('deselect ben', 'Okay, I have de-selected Option 2, Ben.', deselectOption2, {
+        visual: 'De-Select Ben'
+      });
+      addVoiceRoute('deselect shivam', 'Okay, I have de-selected Option 3, Shivam.', deselectOption3, {
+        visual: 'De-Select Shivam'
+      });
+      addVoiceRoute('deselect harshitha', 'Okay, I have de-selected Option 4, Harshitha.', deselectOption4, {
+        visual: 'De-Select Harshitha'
       });
 
       addVoiceRoute('continue', ['Okay, I have pressed Continue for you.'], handleContinueClick, {
@@ -93,6 +119,16 @@ export default function ContactsPage() {
         removeVoiceRoute('deselect option 2');
         removeVoiceRoute('deselect option 3');
         removeVoiceRoute('deselect option 4');
+
+        removeVoiceRoute('select david');
+        removeVoiceRoute('select ben');
+        removeVoiceRoute('select shivam');
+        removeVoiceRoute('select harshitha');
+        removeVoiceRoute('deselect david');
+        removeVoiceRoute('deselect ben');
+        removeVoiceRoute('deselect shivam');
+        removeVoiceRoute('deselect harshitha');
+
         removeVoiceRoute('continue');
       }
 
