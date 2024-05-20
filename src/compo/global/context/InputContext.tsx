@@ -131,7 +131,7 @@ type VoiceRouteProps = {
 }
 
 const sanitizeTranscript = (transcript: string) => {
-    return convertNumbersInPhrase(transcript.toLowerCase()).replace(/[^a-zA-Z0-9 ]/g, '');
+    return convertNumbersInPhrase(transcript.toLowerCase()).replace(/[^a-zA-Z0-9 -]/g, '');
 }
 
 const playSound = (audio: any)=>{
