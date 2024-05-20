@@ -6,7 +6,7 @@ import { useInput } from 'compo/global/context/InputContext';
 
 export default function GarlicParmesanChicken() {
     const router = useRouter();
-    const {addVoiceRoute, removeVoiceRoute, setRecipeHTML} = useInput();
+    const {addVoiceRoute, removeVoiceRoute, setRecipeTitle, setRecipeHTML} = useInput();
 
     const recipeRef = useRef<HTMLDivElement>(null);
 
@@ -17,8 +17,13 @@ export default function GarlicParmesanChicken() {
 
     // Function to handle navigation back to the call screen page
     const handleCallScreenButton = () => {
-        setRecipeHTML(recipeRef.current?.innerHTML || '');
         router.push(`/call-screen`);
+    }
+
+    const setRecipe = ()=>{
+        setRecipeTitle('Garlic Parmesan Chicken');
+        setRecipeHTML(recipeRef.current?.innerHTML || '');
+        handleCallScreenButton();
     }
 
     useEffect(() => {
@@ -26,10 +31,14 @@ export default function GarlicParmesanChicken() {
         addVoiceRoute('call screen', 'Okay, we are back to the call screen.', handleCallScreenButton, {
             visual: 'Return to Call Screen'
         });
+        addVoiceRoute('set recipe', 'Okay, I have set Garlic Parmesan Chicken as the Recipe.', setRecipe, {
+            visual: 'Set as Recipe'
+        });
 
         return () => {
             // Remove voice route when component is unmounted
             removeVoiceRoute('call screen');
+            removeVoiceRoute('set recipe');
         }
     }, []);
 
@@ -37,8 +46,8 @@ export default function GarlicParmesanChicken() {
         <>
             <main className={styles.main}>
             </main>
+            <h1>Garlic Parmesan Chicken</h1>
             <div className={styles.ChickenPage} ref={recipeRef}>
-                <h1>Garlic Parmesan Chicken</h1>
                 <div className={styles.Ingredients}>
                     <h2>Ingredients:</h2>
                     <ul>
@@ -84,6 +93,9 @@ export default function GarlicParmesanChicken() {
             </div>
             <div className={styles.buttonContainer}>
                 <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={setRecipe}><strong>Select Recipe</strong></button>
             </div>
         </>
     );

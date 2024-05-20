@@ -1,12 +1,14 @@
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
 import { useInput } from 'compo/global/context/InputContext';
 
 export default function HoneyMustardChicken() {
     const router = useRouter();
-    const { addVoiceRoute, removeVoiceRoute } = useInput();
+    const { addVoiceRoute, removeVoiceRoute, setRecipeTitle, setRecipeHTML } = useInput();
+
+    const recipeRef = useRef<HTMLDivElement>(null);
 
     // Function to handle navigation to the detailed recipe page
     const handleSelectRecipe = (id: string) => {
@@ -18,15 +20,25 @@ export default function HoneyMustardChicken() {
         router.push(`/call-screen`);
     }
 
+    const setRecipe = ()=>{
+        setRecipeTitle('Honey Mustard Chicken');
+        setRecipeHTML(recipeRef.current?.innerHTML || '');
+        handleCallScreenButton();
+    }
+
     useEffect(() => {
         // Add voice route for selecting this recipe
         addVoiceRoute('call screen', 'Okay, we are back to the call screen.', handleCallScreenButton, {
             visual: 'Return to Call Screen'
         });
+        addVoiceRoute('set recipe', 'Okay, I have set Garlic Parmesan Chicken as the Recipe.', setRecipe, {
+            visual: 'Set as Recipe'
+        });
 
         return () => {
             // Remove voice route when component is unmounted
             removeVoiceRoute('call screen');
+            removeVoiceRoute('set recipe');
         }
     }, []);
 
@@ -34,8 +46,8 @@ export default function HoneyMustardChicken() {
         <>
             <main className={styles.main}>
             </main>
-            <div className={styles.ChickenPage}>
-                <h1>Honey Mustard Chicken</h1>
+            <h1>Honey Mustard Chicken</h1>
+            <div ref={recipeRef} className={styles.ChickenPage}>
                 <div className={styles.Ingredients}>
                     <h2>Ingredients:</h2>
                     <ul>
@@ -71,9 +83,12 @@ export default function HoneyMustardChicken() {
                         </li>
                     </ol>
                 </div>
-                <div className={styles.buttonContainer}>
-                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
-                </div>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={setRecipe}><strong>Select Recipe</strong></button>
             </div>
         </>
     );

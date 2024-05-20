@@ -61,7 +61,7 @@
     height: 100%;
 }
 
-.ChickenPage button {
+.buttonContainer button {
     background-color: rgb(103, 99, 99);
     color: white;
     border: white;
@@ -71,7 +71,7 @@
     cursor: pointer;
 }
 
-.ChickenPage button:hover {
+.buttonContainer button:hover {
     background-color: rgba(115, 114, 114, 0.8);
 }
 
