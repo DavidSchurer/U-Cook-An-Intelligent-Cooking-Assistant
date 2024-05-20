@@ -408,7 +408,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
             setAssistantFeedback(true);
             
-            const response = processTranscript(sanitizeTranscript(transcript));
+            const response = processTranscript(commandTranscript);
             speakText(response.join('\n'));
             setAssistantMessage(response);
 

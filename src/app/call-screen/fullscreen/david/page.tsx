@@ -19,7 +19,7 @@ export default function BenFullScreen() {
     };
 
     const handleEndCall = () => {
-        router.push('/');
+        router.push('/end-page');
     }
 
     useEffect(() => {
