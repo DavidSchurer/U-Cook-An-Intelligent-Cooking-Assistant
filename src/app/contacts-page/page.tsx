@@ -12,7 +12,7 @@ export default function ContactsPage() {
     const {addVoiceRoute, removeVoiceRoute} = useInput();
   
       const handleContinueClick = () => {
-        router.push("/categories-page");
+        router.push("/call-screen");
       };
 
     const [option1Selected, setOption1Selected] = useState(false);
