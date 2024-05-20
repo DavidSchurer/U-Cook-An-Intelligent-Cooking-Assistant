@@ -38,6 +38,13 @@ export default function ContactsPage() {
         setOption4Selected(true);
       }
 
+      const selectAll = () => {
+        setOption1Selected(true);
+        setOption2Selected(true);
+        setOption3Selected(true);
+        setOption4Selected(true);
+      }
+
       const deselectOption1 = () => {
         setOption1Selected(false);
       }
@@ -51,6 +58,13 @@ export default function ContactsPage() {
       }
 
       const deselectOption4 = () => {
+        setOption4Selected(false);
+      }
+
+      const deselectAll = () => {
+        setOption1Selected(false);
+        setOption2Selected(false);
+        setOption3Selected(false);
         setOption4Selected(false);
       }
 
@@ -79,6 +93,10 @@ export default function ContactsPage() {
       addVoiceRoute('select harshitha', 'Okay, I have selected Option 4, Harshitha.', selectOption4, {
         visual: 'Select Harshitha'
       });
+
+      addVoiceRoute('select all', ['Okay, I have selected all options.'], selectAll, {
+        visual: 'Select All'
+      });
       
       addVoiceRoute('deselect option 1', 'Okay, I have de-selected Option 1, David.', deselectOption1, {
         visual: 'De-select Option 1'
@@ -104,6 +122,10 @@ export default function ContactsPage() {
       });
       addVoiceRoute('deselect harshitha', 'Okay, I have de-selected Option 4, Harshitha.', deselectOption4, {
         visual: 'De-Select Harshitha'
+      });
+
+      addVoiceRoute('deselect all', ['Okay, I have de-selected all options.'], deselectAll, {
+        visual: 'De-select All'
       });
 
       addVoiceRoute('continue', ['Okay, I have pressed Continue for you.'], handleContinueClick, {
