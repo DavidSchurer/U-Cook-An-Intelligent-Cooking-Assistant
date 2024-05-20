@@ -39,6 +39,8 @@ export default function Home() {
       setRating(ratingValue);
     };
 
+    const ratingLabels = ["Very Bad", "Bad", "Okay", "Good", "Excellent"];
+
     return (
         <main className={styles.main}>
             <div className={styles.UCookHomePage}>
@@ -46,17 +48,15 @@ export default function Home() {
               <div className={styles.WelcomePopUp}>
                 <h1>Thank you for using U-Cook: An Intelligent Cooking Assistant</h1>
 
-                <p>How was your experience using U-Cook: An Intelligent Cooking Assistant?</p>
+                <p>How was your experience using U-Cook: An Intelligent Cooking Assistant today?</p>
                 <p>Please enter a rating below:</p>
                 <div className={styles.rating}>
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <span
-                      key={star}
-                      className={star <= rating ? styles.selectedStar : styles.star}
-                      onClick={() => handleRatingClick(star)}
-                    >
-                      ★
-                    </span>
+                    <div key={star} className={`${styles.starContainer} ${star <= rating ? styles.popUp : ''}`} 
+                    onClick={() => handleRatingClick(star)}>
+                      <span className={star <= rating ? styles.selectedStar : styles.star}>★</span>
+                      <span className={styles.ratingLabel}>{ratingLabels[star - 1]}</span>
+                    </div>
                   ))}
                 </div>
               </div>
