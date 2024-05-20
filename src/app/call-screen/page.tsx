@@ -30,13 +30,21 @@ function BottomPanel(){
         router.push('/categories-page');
     };
 
+    const handleEndCall = () => {
+        router.push('/');
+    }
+
     useEffect(() => {
         addVoiceRoute('recipes', 'Okay, I have selected Recipes.', handleButtonClick, {
             visual: 'View Recipes'
         });
+        addVoiceRoute('end call', 'Okay, I have ended the call.', handleEndCall, {
+            visual: 'End Call'
+        });
 
         return () => {
             removeVoiceRoute('recipes');
+            removeVoiceRoute('end call');
         }
     }, []);
 
@@ -55,7 +63,7 @@ function BottomPanel(){
                 </button>
             </div>
             <div className={styles.bottomPanelItem}>
-                <button className={styles.bottomPanelButton}>
+                <button className={styles.bottomPanelButton} onClick={handleEndCall}>
                     <Image src="/icons/end-call.png" alt="End Call" width={24} height={24} />
                     <span>End Call</span>
                 </button>
