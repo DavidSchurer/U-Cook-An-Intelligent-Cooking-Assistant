@@ -11,6 +11,11 @@ export default function LemonHerbChicken() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -48,6 +53,9 @@ export default function LemonHerbChicken() {
                             Heat a grill or grill pan on medium heat and brush grill with oil to prevent sticking. Grill the chicken for 5 to 6 minutes on each side or until cooked through and no longer pink (internal temp should be 165 degrees). Remove chicken from grill and let it rest for 5 minutes before serving.
                         </li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>

@@ -11,6 +11,11 @@ export default function GarlicParmesanChicken() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -58,6 +63,9 @@ export default function GarlicParmesanChicken() {
                             Add the chicken back to the skillet (along with any juices from the plate) and spoon some sauce over top. Season with extra salt and pepper if needed and sprinkle with parsley. Serve immediately.
                         </li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>

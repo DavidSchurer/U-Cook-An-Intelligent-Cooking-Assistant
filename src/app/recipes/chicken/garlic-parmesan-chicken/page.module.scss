@@ -50,6 +50,17 @@
     margin: 0;
 }
 
+.ChickenPage li {
+    margin-bottom: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
 .ChickenPage button {
     background-color: rgb(103, 99, 99);
     color: white;
@@ -58,16 +69,12 @@
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
-    width: 100%;
-}
-
-.ChickenPage li {
-    margin-bottom: 10px;
 }
 
 .ChickenPage button:hover {
-    background-color: rgba(7, 6, 6, 0.8);
+    background-color: rgba(115, 114, 114, 0.8);
 }
+
 .instructions h3{
     font-weight: bold;
 }
