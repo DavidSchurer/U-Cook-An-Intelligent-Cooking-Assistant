@@ -93,6 +93,7 @@ const findMaxIndexes = (arr: number[], threshold: number) => {
 
 const determineCommand = (voiceRoutes: Map<string,VoiceRouteProps>, targetPhrase: string, inputPhrases: string[])=>{
 
+    console.log('routes',voiceRoutes);
     let weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
     console.log('weights',weights);
     let maxIndexesCompo = findMaxIndexes(weights, 0);

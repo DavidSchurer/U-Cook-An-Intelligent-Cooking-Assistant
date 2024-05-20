@@ -93,16 +93,16 @@ export default function ContactsPage() {
         visual: 'De-select Option 4'
       });
 
-      addVoiceRoute('select david', 'Okay, I have de-selected Option 1, David.', deselectOption1, {
+      addVoiceRoute('deselect david', 'Okay, I have de-selected Option 1, David.', deselectOption1, {
         visual: 'De-Select David'
       });
-      addVoiceRoute('select ben', 'Okay, I have de-selected Option 2, Ben.', deselectOption2, {
+      addVoiceRoute('deselect ben', 'Okay, I have de-selected Option 2, Ben.', deselectOption2, {
         visual: 'De-Select Ben'
       });
-      addVoiceRoute('select shivam', 'Okay, I have de-selected Option 3, Shivam.', deselectOption3, {
+      addVoiceRoute('deselect shivam', 'Okay, I have de-selected Option 3, Shivam.', deselectOption3, {
         visual: 'De-Select Shivam'
       });
-      addVoiceRoute('select harshitha', 'Okay, I have de-selected Option 4, Harshitha.', deselectOption4, {
+      addVoiceRoute('deselect harshitha', 'Okay, I have de-selected Option 4, Harshitha.', deselectOption4, {
         visual: 'De-Select Harshitha'
       });
 
