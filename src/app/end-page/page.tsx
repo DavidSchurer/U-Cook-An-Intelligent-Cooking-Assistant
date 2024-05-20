@@ -48,6 +48,18 @@ export default function Home() {
 
                 <p>How was your experience using U-Cook: An Intelligent Cooking Assistant?</p>
                 <p>Please enter a rating below:</p>
+                <div className={styles.rating}>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <span
+                      key={star}
+                      className={star <= rating ? styles.selectedStar : styles.star}
+                      onClick={() => handleRatingClick(star)}
+                    >
+                      ★ {star}
+                    </span>
+                  ))}
+                </div>
+                <button ref={continueButtonRef} onClick={handleContinueClick}>Continue</button>
               </div>
             </div>
         </main>
