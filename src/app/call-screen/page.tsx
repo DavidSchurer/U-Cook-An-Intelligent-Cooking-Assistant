@@ -29,7 +29,12 @@ function ParticipantTile({name, image, me}: ParticipantTileProps){
     )
 }
 
-export function BigParticipantTile({name, image}: ParticipantTileProps){
+interface BigParticipantTileProps {
+    name: string;
+    image: string;
+}
+
+export function BigParticipantTile({name, image}: BigParticipantTileProps){
     return (
         <div className={styles.bigParticipant}>
             
