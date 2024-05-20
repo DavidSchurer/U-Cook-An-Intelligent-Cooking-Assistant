@@ -1,10 +1,12 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
+import { useInput } from 'compo/global/context/InputContext';
 
 export default function Carbonara() {
     const router = useRouter();
+    const { addVoiceRoute, removeVoiceRoute } = useInput();
 
     // Sample data for pasta recipes
     const pastaRecipes = [
@@ -20,6 +22,18 @@ export default function Carbonara() {
     const handleCallScreenButton = () => {
         router.push(`/call-screen`);
     }
+
+    useEffect(() => {
+        // Add voice route for selecting this recipe
+        addVoiceRoute('call screen', 'Okay, we are back to the call screen.', handleCallScreenButton, {
+            visual: 'Return to Call Screen'
+        });
+
+        return () => {
+            // Remove voice route when component is unmounted
+            removeVoiceRoute('call screen');
+        }
+    }, []);
 
     return (
         <>
