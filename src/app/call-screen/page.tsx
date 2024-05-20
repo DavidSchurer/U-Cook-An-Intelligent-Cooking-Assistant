@@ -17,10 +17,31 @@ function ParticipantTile({name, image}: ParticipantTileProps){
     )
 }
 
+function BottomPanel(){
+    return (
+        <div className={styles.bottomPanel}>
+            <div className={styles.bottomPanelItem}>
+                <button className={styles.bottomPanelButton}>
+                    <Image src="/icons/microphone.svg" alt="Microphone" width={24} height={24} />
+                </button>
+            </div>
+            <div className={styles.bottomPanelItem}>
+                <button className={styles.bottomPanelButton}>
+                    <Image src="/icons/video-camera.svg" alt="Video Camera" width={24} height={24} />
+                </button>
+            </div>
+            <div className={styles.bottomPanelItem}>
+                <button className={styles.bottomPanelButton}>
+                    <Image src="/icons/end-call.svg" alt="End Call" width={24} height={24} />
+                </button>
+            </div>
+        </div>
+    )
+}
+
 export default function CallScreen() {
     return (
         <div className={styles.container}>
-            <h1>Call Screen</h1>
             <div className={styles.callGrid}>
                 <ParticipantTile name="David" image="/participants/david.png" />
                 <ParticipantTile name="Ben" image="/participants/ben.png" />
@@ -34,6 +55,7 @@ export default function CallScreen() {
                     Selina (Me)
                 </div>
             </div>
+            <BottomPanel />
         </div>
     )
 }

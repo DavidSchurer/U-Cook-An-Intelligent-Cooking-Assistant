@@ -34,3 +34,10 @@
         "callScreen callScreen"
         "callScreen callScreen";
 }
+
+.bottomPanel {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
