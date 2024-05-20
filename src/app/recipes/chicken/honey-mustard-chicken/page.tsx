@@ -11,6 +11,11 @@ export default function HoneyMustardChicken() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -51,6 +56,9 @@ export default function HoneyMustardChicken() {
                             Bake for 40 to 45 minutes or until the chicken is fully cooked and registers 175°F (80°C). Turn on the top oven broiler in the last 2 to 3 minutes to crisp up the skin.
                         </li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>
