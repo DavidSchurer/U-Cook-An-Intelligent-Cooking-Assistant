@@ -32,6 +32,12 @@ export default function BenFullScreen() {
         addVoiceRoute('end call', 'Okay, I have ended the call.', handleEndCall, {
             visual: 'End Call'
         });
+
+        return () => {
+            removeVoiceRoute('recipes');
+            removeVoiceRoute('grid view');
+            removeVoiceRoute('end call');
+        }
     }, []);
 
     return (

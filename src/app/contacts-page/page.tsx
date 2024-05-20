@@ -151,6 +151,9 @@ export default function ContactsPage() {
         removeVoiceRoute('deselect shivam');
         removeVoiceRoute('deselect harshitha');
 
+        removeVoiceRoute('select all');
+        removeVoiceRoute('deselect all');
+
         removeVoiceRoute('continue');
       }
 
