@@ -407,8 +407,8 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             playSound(audioProcessRef.current);
 
             setAssistantFeedback(true);
-            
-            const response = processTranscript(commandTranscript);
+
+            const response = processTranscript(extractTranscript(sanitizeTranscript(transcript)));
             speakText(response.join('\n'));
             setAssistantMessage(response);
 
