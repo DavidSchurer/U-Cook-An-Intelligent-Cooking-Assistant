@@ -440,9 +440,9 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
                     </div>
                 </div>
             </div>
-            <footer className={styles.footer}>
+            {/* <footer className={styles.footer}>
                 <p className={styles.copyright}>&copy; U-Cook Organization by USURF Software Company. All rights fall under Team U-Surfers.</p>
-            </footer>
+            </footer> */}
         </InputContext.Provider>
     )
 
