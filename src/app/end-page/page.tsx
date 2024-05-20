@@ -10,7 +10,7 @@ export default function Home() {
   const {addVoiceRoute, removeVoiceRoute} = useInput();
 
     const handleContinueClick = () => {
-      router.push("/contacts-page");
+      router.push("/");
     };
 
     const continueButtonRef = useRef<HTMLButtonElement | null>(null);
