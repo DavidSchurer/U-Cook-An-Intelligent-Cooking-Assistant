@@ -1,2 +1,36 @@
 @import 'styles/variables';
 
+.participant {
+    background-color: white;
+    color: white;
+    font-size: 15px;
+    width: 400px;
+    height: 300px;
+    margin: 20px;
+    position: relative;
+
+    .image {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .name {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 5px 20px;
+    }
+}
+
+.callGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "callScreen callScreen"
+        "callScreen callScreen";
+}
