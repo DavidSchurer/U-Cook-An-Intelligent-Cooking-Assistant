@@ -16,6 +16,11 @@ export default function Carbonara() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -58,6 +63,9 @@ export default function Carbonara() {
                             Add the beaten eggs with cheese and toss quickly to combine once more. Add salt to taste. Add some pasta water back to the pasta to keep it from drying out.</li>
                         <li><h3>Serve:</h3>Serve at once with the rest of the parmesan and freshly ground black pepper. If you want, sprinkle with a little fresh chopped parsley.</li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>

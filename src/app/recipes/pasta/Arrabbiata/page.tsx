@@ -16,6 +16,11 @@ export default function Arrabbiata() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -61,6 +66,9 @@ export default function Arrabbiata() {
                         
                         <li><h3>Serve</h3>Serve immediately topped with a generous portion of grated pecorino or parmesan cheese and fresh chopped parsley.</li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>
