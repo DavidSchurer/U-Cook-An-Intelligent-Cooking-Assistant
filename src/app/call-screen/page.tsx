@@ -50,7 +50,7 @@ export function BottomPanel(){
     };
 
     const handleEndCall = () => {
-        router.push('/');
+        router.push('/end-page');
     }
 
     const handleFullscreen = (name: string) => {
