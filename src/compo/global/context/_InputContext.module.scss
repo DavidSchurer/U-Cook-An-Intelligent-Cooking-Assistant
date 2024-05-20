@@ -4,6 +4,7 @@
     background-color: gray;
     color: white;
     padding: 10px;
+    height: 65px;
 
     .inlineUCook {
         filter: invert(1);
@@ -35,7 +36,8 @@
 }
 
 .content {
-    width: calc(100% - 120px);
+    height: calc(100% - 130px);
+    overflow: hidden auto;
 }
 
 .MicrophoneIcon{
@@ -108,4 +110,35 @@
 
 .footer {
     background-color: gray;
+    color: white;
+    padding: 10px;
+    height: 65px;
+
+    .inlineUCook {
+        filter: invert(1);
+        margin-right: 0.1em;
+    }
+
+    h1 {
+        display: inline-block;
+        height: 40px;
+        line-height: 1.45;
+        margin: 0;
+        vertical-align: top;
+
+        .title {
+            font-weight: bold;
+            margin-right: 0.2em;
+        }
+
+        .desc {
+            color: rgb(210, 210, 210);
+
+            .em {
+                color: white;
+                font-weight: bold;
+            }
+        }
+    }
+
 }

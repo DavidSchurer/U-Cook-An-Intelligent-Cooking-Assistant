@@ -129,8 +129,12 @@ const sanitizeTranscript = (transcript: string) => {
 
 const playSound = (audio: any)=>{
     if(!audio) return;
-    audio.currentTime = 0;
-    audio.play();
+    try{
+        audio.currentTime = 0;
+        audio.play();
+    }catch(e){
+        
+    }
 }
 
 export const InputContext = createContext<InputAPI | null>(null);
@@ -257,7 +261,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
         const matches: string[] = determineCommand(voiceRoutes.current, transcript, Array.from(voiceRoutes.current.keys()));
 
-        if(matches.length === 0) return ["I don't understand what you mean."];
+        if(matches.length === 0) return ["I don't understand what you mean. This is not one of my jobs."];
 
         if(matches.length > 1){
             let ambiguousOutput = ["Which of the following do you mean?"]
@@ -353,7 +357,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         clearTimeout(voiceTimerRef.current);
         voiceTimerRef.current = setTimeout(()=>{
 
-            if(!assistantFeedback && extractTranscript(transcript) === ''){
+            if(assistantListening && !assistantFeedback && extractTranscript(transcript) === ''){
                 playSound(audioFailRef.current);
                 setAssistantListening(false);
                 return;
