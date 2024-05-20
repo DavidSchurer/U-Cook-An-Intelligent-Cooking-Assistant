@@ -59,7 +59,6 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                <button ref={continueButtonRef} onClick={handleContinueClick}>Continue</button>
               </div>
             </div>
         </main>
