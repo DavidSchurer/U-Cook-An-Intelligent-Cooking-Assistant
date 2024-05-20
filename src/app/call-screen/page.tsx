@@ -45,9 +45,7 @@ export default function CallScreen() {
             <div className={styles.callGrid}>
                 <ParticipantTile name="David" image="/participants/david.png" />
                 <ParticipantTile name="Ben" image="/participants/ben.png" />
-                <div className={styles.participant}>
-                    Shivam
-                </div>
+                <ParticipantTile name="Shivam" image="/participants/shivam.png" />
                 <div className={styles.participant}>
                     Harshitha
                 </div>
