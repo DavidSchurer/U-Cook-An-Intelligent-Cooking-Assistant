@@ -157,7 +157,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
     
-    const [voiceToggle, setVoiceToggle] = useState(true);
+    const [voiceToggle, setVoiceToggle] = useState(false);
 
     const [sanitizedTranscript, setSanitizedTranscript] = useState('');
 
