@@ -18,6 +18,7 @@ export default function Arrabbiata() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
     const handleCallScreenButton = () => {
         router.push(`/call-screen`);
     }
