@@ -1,12 +1,14 @@
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
 import { useInput } from 'compo/global/context/InputContext';
 
 export default function Carbonara() {
     const router = useRouter();
-    const { addVoiceRoute, removeVoiceRoute } = useInput();
+    const { addVoiceRoute, removeVoiceRoute, setRecipeTitle, setRecipeHTML } = useInput();
+
+    const recipeRef = useRef<HTMLDivElement>(null);
 
     // Sample data for pasta recipes
     const pastaRecipes = [
@@ -21,6 +23,12 @@ export default function Carbonara() {
     // Function to handle navigation back to the call screen page
     const handleCallScreenButton = () => {
         router.push(`/call-screen`);
+    }
+
+    const setRecipe = ()=>{
+        setRecipeTitle('Spaghetti Carbonara');
+        setRecipeHTML(recipeRef.current?.innerHTML || '');
+        handleCallScreenButton();
     }
 
     useEffect(() => {
@@ -39,7 +47,7 @@ export default function Carbonara() {
         <>
             <main className={styles.main}>
             </main>
-            <div className={styles.PastaPage}>
+            <div ref={recipeRef} className={styles.PastaPage}>
                 <h1>Spaghetti Carbonara</h1>
                 <div className={styles.Ingredients}>
                     <h2>Ingredients:</h2>
@@ -78,9 +86,12 @@ export default function Carbonara() {
                         <li><h3>Serve:</h3>Serve at once with the rest of the parmesan and freshly ground black pepper. If you want, sprinkle with a little fresh chopped parsley.</li>
                     </ol>
                 </div>
-                <div className={styles.buttonContainer}>
-                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
-                </div>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={setRecipe}><strong>Select Recipe</strong></button>
             </div>
         </>
     );

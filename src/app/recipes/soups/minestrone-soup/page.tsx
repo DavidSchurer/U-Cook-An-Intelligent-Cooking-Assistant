@@ -1,10 +1,14 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
+import { useInput } from 'compo/global/context/InputContext';
 
 export default function MinestroneSoup() {
     const router = useRouter();
+    const {addVoiceRoute, removeVoiceRoute, setRecipeTitle, setRecipeHTML} = useInput();
+
+    const recipeRef = useRef<HTMLDivElement>(null);
 
     // Function to handle navigation to the detailed recipe page
     const handleSelectRecipe = (id: string) => {
@@ -16,12 +20,34 @@ export default function MinestroneSoup() {
         router.push(`/call-screen`);
     }
 
+    const setRecipe = ()=>{
+        setRecipeTitle('Minestrone Soup');
+        setRecipeHTML(recipeRef.current?.innerHTML || '');
+        handleCallScreenButton();
+    }
+
+    useEffect(() => {
+        // Add voice route for selecting this recipe
+        addVoiceRoute('call screen', 'Okay, we are back to the call screen.', handleCallScreenButton, {
+            visual: 'Return to Call Screen'
+        });
+        addVoiceRoute('set recipe', 'Okay, I have set Minestrone Soup as the Recipe.', setRecipe, {
+            visual: 'Set as Recipe'
+        });
+
+        return () => {
+            // Remove voice route when component is unmounted
+            removeVoiceRoute('call screen');
+            removeVoiceRoute('set recipe');
+        }
+    }, []);
+
     return (
         <>
             <main className={styles.main}>
             </main>
-            <div className={styles.SoupsPage}>
-                <h1>Minestrone Soup</h1>
+            <h1>Minestrone Soup</h1>
+            <div ref={recipeRef} className={styles.SoupsPage}>
                 <div className={styles.Ingredients}>
                     <h2>Ingredients:</h2>
                     <ul>
@@ -66,9 +92,12 @@ export default function MinestroneSoup() {
                         </li>
                     </ol>
                 </div>
-                <div className={styles.buttonContainer}>
-                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
-                </div>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={setRecipe}><strong>Select Recipe</strong></button>
             </div>
         </>
     );

@@ -1,12 +1,14 @@
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
 import { useInput } from 'compo/global/context/InputContext';
 
 export default function Alfredo() {
     const router = useRouter();
-    const { addVoiceRoute, removeVoiceRoute } = useInput();
+    const { addVoiceRoute, removeVoiceRoute, setRecipeTitle, setRecipeHTML } = useInput();
+
+    const recipeRef = useRef<HTMLDivElement>(null);
 
     // Sample data for pasta recipes
     const pastaRecipes = [
@@ -23,15 +25,25 @@ export default function Alfredo() {
         router.push(`/call-screen`);
     }
 
+    const setRecipe = ()=>{
+        setRecipeTitle('Fettucicine Alfredo');
+        setRecipeHTML(recipeRef.current?.innerHTML || '');
+        handleCallScreenButton();
+    }
+
     useEffect(() => {
         // Add voice route for selecting this recipe
         addVoiceRoute('call screen', 'Okay, we are back to the call screen.', handleCallScreenButton, {
             visual: 'Return to Call Screen'
         });
+        addVoiceRoute('set recipe', 'Okay, I have set Fettucine Alfredo as the Recipe.', setRecipe, {
+            visual: 'Set as Recipe'
+        });
 
         return () => {
             // Remove voice route when component is unmounted
             removeVoiceRoute('call screen');
+            removeVoiceRoute('set recipe');
         }
     }, []);
 
@@ -39,8 +51,8 @@ export default function Alfredo() {
         <>
             <main className={styles.main}>
             </main>
-            <div className={styles.PastaPage}>
-                <h1>Fettucicine Alfredo</h1>
+            <h1>Fettucicine Alfredo</h1>
+            <div ref={recipeRef} className={styles.PastaPage}>
                 <div className={styles.Ingredients}>
                     <h2>Ingredients:</h2>
                     <ul>
@@ -78,9 +90,12 @@ export default function Alfredo() {
 
                     </ol>
                 </div>
-                <div className={styles.buttonContainer}>
-                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
-                </div>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={setRecipe}><strong>Select Recipe</strong></button>
             </div>
         </>
     );

@@ -29,7 +29,12 @@ function ParticipantTile({name, image, me}: ParticipantTileProps){
     )
 }
 
-export function BigParticipantTile({name, image}: ParticipantTileProps){
+interface BigParticipantTileProps {
+    name: string;
+    image: string;
+}
+
+export function BigParticipantTile({name, image}: BigParticipantTileProps){
     return (
         <div className={styles.bigParticipant}>
             
@@ -57,6 +62,21 @@ export function BottomPanel(){
         router.push('/call-screen/fullscreen/' + name.toLowerCase());
     }
 
+    const scrollRecipeUp = () => {
+        const recipeContainer = document.querySelector(`.${styles.recipeContainer}`);
+        console.log(recipeContainer);
+        if(recipeContainer){
+            recipeContainer.scrollTop -= 400;
+        }
+    }
+
+    const scrollRecipeDown = () => {
+        const recipeContainer = document.querySelector(`.${styles.recipeContainer}`);
+        if(recipeContainer){
+            recipeContainer.scrollTop += 400;
+        }
+    }
+
     useEffect(() => {
         addVoiceRoute('recipes', 'Okay, I have selected Recipes.', handleButtonClick, {
             visual: 'View Recipes'
@@ -76,6 +96,15 @@ export function BottomPanel(){
         });
         addVoiceRoute('fullscreen harshitha', 'Okay, you are viewing Harshitha in fullscreen.', () => handleFullscreen('Harshitha'), {
             visual: 'Harshitha'
+        });
+        addVoiceRoute('fullscreen selina', 'Okay, you are viewing Selina in fullscreen.', () => handleFullscreen('Selina'), {
+            visual: 'Selina'
+        });
+        addVoiceRoute('scroll up', 'Okay, I have scrolled the recipe up.', scrollRecipeUp, {
+            visual: 'Scroll Up'
+        });
+        addVoiceRoute('scroll down', 'Okay, I have scrolled the recipe down.', scrollRecipeDown, {
+            visual: 'Scroll Down'
         });
 
         return () => {
@@ -116,7 +145,7 @@ export function BottomPanel(){
 
 export default function CallScreen() {
 
-    const {recipeHTML} = useInput();
+    const {recipeHTML, recipeTitle} = useInput();
 
     const recipeContainerRef = useRef<HTMLDivElement>(null);
 
@@ -138,7 +167,7 @@ export default function CallScreen() {
                 <ParticipantTile name="Selina" image="/participants/selina.png" me={true}/>
             </div>
             <div className={styles.recipeDisplay}>
-                <h1 className={styles.heading}>Current Recipe:</h1>
+                <h1 className={styles.heading}><span style={{fontWeight: 'bold'}}>Current Recipe:</span> {recipeTitle}</h1>
                 <hr/>
                 <div ref={recipeContainerRef} className={styles.recipeContainer}>
                     There is currently no recipe to display! Find one now!
