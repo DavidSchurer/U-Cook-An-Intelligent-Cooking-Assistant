@@ -37,7 +37,7 @@ export default function BenFullScreen() {
     return (
         <div className={styles.container}>
             <button className={styles.gridViewButton} onClick={handleBackToCallScreen}>Grid View</button>
-            <BigParticipantTile name="Harshitha" image="/participants/harshitha.png"/>
+            <BigParticipantTile name="Selina (me)" image="/participants/selina.png"/>
             <BottomPanel/>
         </div>
     )

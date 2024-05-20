@@ -1,12 +1,14 @@
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
 import { useInput } from 'compo/global/context/InputContext';
 
 export default function GarlicParmesanChicken() {
     const router = useRouter();
-    const {addVoiceRoute, removeVoiceRoute} = useInput();
+    const {addVoiceRoute, removeVoiceRoute, setRecipeHTML} = useInput();
+
+    const recipeRef = useRef<HTMLDivElement>(null);
 
     // Function to handle navigation to the detailed recipe page
     const handleSelectRecipe = (id: string) => {
@@ -15,6 +17,7 @@ export default function GarlicParmesanChicken() {
 
     // Function to handle navigation back to the call screen page
     const handleCallScreenButton = () => {
+        setRecipeHTML(recipeRef.current?.innerHTML || '');
         router.push(`/call-screen`);
     }
 
@@ -34,7 +37,7 @@ export default function GarlicParmesanChicken() {
         <>
             <main className={styles.main}>
             </main>
-            <div className={styles.ChickenPage}>
+            <div className={styles.ChickenPage} ref={recipeRef}>
                 <h1>Garlic Parmesan Chicken</h1>
                 <div className={styles.Ingredients}>
                     <h2>Ingredients:</h2>
@@ -78,9 +81,9 @@ export default function GarlicParmesanChicken() {
                         </li>
                     </ol>
                 </div>
-                <div className={styles.buttonContainer}>
-                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
-                </div>
+            </div>
+            <div className={styles.buttonContainer}>
+                <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
             </div>
         </>
     );

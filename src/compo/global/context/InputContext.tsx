@@ -114,6 +114,9 @@ interface InputAPI {
 
     addVoiceRoute: (route: string, feedback: string|string[]|(()=>string[]), callback: ()=>void, args?: any)=>void;
     removeVoiceRoute: (route: string)=>void;
+
+    recipeHTML: string;
+    setRecipeHTML: (html: string)=>void;
 }
 
 type VoiceRoute = ()=>void;
@@ -141,6 +144,8 @@ const playSound = (audio: any)=>{
 export const InputContext = createContext<InputAPI | null>(null);
 
 export const InputProvider = ({ children }: { children: React.ReactNode }) => {
+
+    const [recipeHTML, setRecipeHTML] = useState('');
 
     const audioWakeRef = useRef<HTMLAudioElement | null>(null);
     const audioFailRef = useRef<HTMLAudioElement | null>(null);
@@ -400,7 +405,10 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         voiceToggle,
 
         addVoiceRoute,
-        removeVoiceRoute
+        removeVoiceRoute,
+
+        recipeHTML,
+        setRecipeHTML
     }
 
     return (

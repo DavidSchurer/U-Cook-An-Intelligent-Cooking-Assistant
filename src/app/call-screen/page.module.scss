@@ -8,6 +8,43 @@
     height: 300px;
     margin: 20px;
     position: relative;
+    cursor: pointer;
+
+    .image {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .name {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 5px 20px;
+    }
+
+    &:after:hover {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.bigParticipant {
+    background-color: white;
+    color: white;
+    font-size: 15px;
+    width: 1200px;
+    height: 900px;
+    margin: 20px;
+    position: relative;
+    margin: auto;
 
     .image {
         object-fit: cover;
@@ -26,13 +63,32 @@
 }
 
 .callGrid {
-    display: grid;
+    display: inline-grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 0px 0px;
     grid-template-areas:
         "callScreen callScreen"
         "callScreen callScreen";
+    width: 60%;
+    vertical-align: top;
+}
+
+.recipeDisplay {
+    display: inline-block;
+    background: white;
+    width: 40%;
+    height: calc(100vh - 230px);
+    padding: 10px;
+
+    .heading {
+        margin: 0;
+    }
+
+    .recipeContainer {
+        height: calc(100% - 57px);
+        overflow: hidden auto;
+    }
 }
 
 .bottomPanel {
