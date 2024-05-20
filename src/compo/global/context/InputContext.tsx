@@ -376,7 +376,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     const speakText = (text: string) => {
         const synth = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(text);
+        const utterance = new SpeechSynthesisUtterance(text.replaceAll('Hi Cook', ''));
         synth.speak(utterance);
     }
 
