@@ -13,31 +13,62 @@ export default function Home() {
       router.push("/");
     };
 
-    const continueButtonRef = useRef<HTMLButtonElement | null>(null);
+    const handleRatingClick = (ratingValue: number) => {
+      setRating(ratingValue);
+    };
 
     useEffect(()=>{
 
-      const pressContinue = () => {
-        if(continueButtonRef.current){
-          continueButtonRef.current.click();
-        }
-      }
 
-      addVoiceRoute('continue', ['Okay, I have pressed Continue for you.'], pressContinue, {
-        visual: 'Continue'
+      addVoiceRoute('1 star', ['Okay, I have set the rating to 1 star, very bad.'], ()=>handleRatingClick(1), {
+        visual: '1 Star'
+      });
+      addVoiceRoute('2 stars', ['Okay, I have set the rating to 2 stars, bad.'], ()=>handleRatingClick(2), {
+        visual: '2 Stars'
+      });
+      addVoiceRoute('3 stars', ['Okay, I have set the rating to 3 stars, okay.'], ()=>handleRatingClick(3), {
+        visual: '3 Stars'
+      });
+      addVoiceRoute('4 stars', ['Okay, I have set the rating to 4 stars, good.'], ()=>handleRatingClick(4), {
+        visual: '4 Stars'
+      });
+      addVoiceRoute('5 stars', ['Okay, I have set the rating to 5 stars, excellent.'], ()=>handleRatingClick(5), {
+        visual: '5 Stars'
+      });
+
+      addVoiceRoute('very bad', ['Okay, I have set the rating to 1 star, very bad.'], ()=>handleRatingClick(1), {
+        visual: 'Very Bad'
+      });
+      addVoiceRoute('bad', ['Okay, I have set the rating to 2 stars, bad.'], ()=>handleRatingClick(2), {
+        visual: 'Bad'
+      });
+      addVoiceRoute('okay', ['Okay, I have set the rating to 3 stars, okay.'], ()=>handleRatingClick(3), {
+        visual: 'Okay'
+      });
+      addVoiceRoute('good', ['Okay, I have set the rating to 4 stars, good.'], ()=>handleRatingClick(4), {
+        visual: 'Good'
+      });
+      addVoiceRoute('excellent', ['Okay, I have set the rating to 5 stars, excellent.'], ()=>handleRatingClick(5), {
+        visual: 'Excellent'
       });
 
       return () => {
-        removeVoiceRoute('continue');
+        removeVoiceRoute('1 star');
+        removeVoiceRoute('2 stars');
+        removeVoiceRoute('3 stars');
+        removeVoiceRoute('4 stars');
+        removeVoiceRoute('5 stars');
+
+        removeVoiceRoute('very bad');
+        removeVoiceRoute('bad');
+        removeVoiceRoute('okay');
+        removeVoiceRoute('good');
+        removeVoiceRoute('excellent');
       }
 
     }, []);
 
     const [rating, setRating] = useState<number>(0);
-
-    const handleRatingClick = (ratingValue: number) => {
-      setRating(ratingValue);
-    };
 
     const ratingLabels = ["Very Bad", "Bad", "Okay", "Good", "Excellent"];
 

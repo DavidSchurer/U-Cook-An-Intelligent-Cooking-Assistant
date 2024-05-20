@@ -67,6 +67,7 @@ export function BottomPanel(){
         console.log(recipeContainer);
         if(recipeContainer){
             recipeContainer.scrollTop -= 400;
+            if(recipeContainer.scrollTop < 0) recipeContainer.scrollTop = 0;
         }
     }
 
@@ -74,6 +75,7 @@ export function BottomPanel(){
         const recipeContainer = document.querySelector(`.${styles.recipeContainer}`);
         if(recipeContainer){
             recipeContainer.scrollTop += 400;
+            if(recipeContainer.scrollTop > recipeContainer.scrollHeight) recipeContainer.scrollTop = recipeContainer.scrollHeight;
         }
     }
 

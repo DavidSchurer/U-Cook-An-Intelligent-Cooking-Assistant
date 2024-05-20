@@ -6,7 +6,7 @@ import styles from './_InputContext.module.scss';
 import microphoneImage from 'app/images/microphoneImage.png';
 import Image from 'next/image';
 
-import { convertNumbersInPhrase } from 'util/numToWorded';
+import { convertNumbersInPhrase, numberToWords } from 'util/numToWorded';
 
 // Function to calculate Levenshtein distance
 function levenshtein(a, b) {
@@ -94,7 +94,7 @@ const findMaxIndexes = (arr: number[], threshold: number) => {
 const determineCommand = (voiceRoutes: Map<string,VoiceRouteProps>, targetPhrase: string, inputPhrases: string[])=>{
 
     console.log('routes',voiceRoutes);
-    let weights = inputPhrases.map(phrase => calculateLikelihood(targetPhrase, phrase));
+    let weights = inputPhrases.map((phrase, i) => calculateLikelihood(targetPhrase, phrase));
     console.log('weights',weights);
     let maxIndexesCompo = findMaxIndexes(weights, 0);
 
@@ -178,6 +178,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const voiceRoutes = useRef<Map<string,VoiceRouteProps>>(new Map());
+    const voiceContext = useRef<Set<string>>(new Set());
     
     const addVoiceRoute = (route: string, feedback: string|string[]|(()=>string[]), callback: VoiceRoute, args: any = {}) => {
         if(typeof feedback === 'string') feedback = [feedback];
@@ -254,6 +255,13 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
+    const clearContext = ()=>{
+        voiceContext.current.forEach((value)=>{
+            voiceRoutes.current.delete(value);
+        });
+        voiceContext.current.clear();
+    }
+
     const processTranscript = (transcript: string)=>{
 
         if(transcript=='help'){
@@ -261,7 +269,8 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             voiceRoutes.current.forEach((value, key)=>{
                 helpList.push(`- ${value.visual || key}`);
             });
-            helpList.push('Tip: your commands only need to be similar enough to be recognized.')
+            helpList.push('Tip: your commands only need to be similar enough to be recognized.');
+            clearContext();
             return helpList;
         }
 
@@ -274,11 +283,28 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         if(matches.length === 0) return ["I don't understand what you mean. This is not one of my jobs."];
 
         if(matches.length > 1){
-            let ambiguousOutput = ["Which of the following do you mean?"]
+            clearContext();
+            let ambiguousOutput = ["Which of the following do you mean?"];
+            let counter = 1;
             for(let i = 0; i < matches.length; i++){
+
+                while(voiceRoutes.current.has('select option '+numberToWords(counter))){
+                    counter++;
+                }
+
+                voiceRoutes.current.set('select option '+numberToWords(counter), {
+                    feedback: ['Option '+numberToWords(counter)+' from prompt selected. ' + (voiceRoutes.current.get(matches[i])?.feedback || '')],
+                    callback: voiceRoutes.current.get(matches[i])?.callback,
+                    visual: ''
+                });
+                voiceContext.current.add('select option '+numberToWords(counter));
+
                 let visual = voiceRoutes.current.get(matches[i])?.visual || matches[i];
-                ambiguousOutput.push(`- ${visual}`);
+                ambiguousOutput.push(`${counter}. ${visual}`);
             }
+            console.log('after map',voiceRoutes.current);
+            ambiguousOutput.push('');
+            ambiguousOutput.push('You can reply with the corresponding number by saying "Hi Cook, select option [your option number]"');
             return ambiguousOutput;
         };
 
@@ -296,6 +322,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             returnFeedback = bestProps?.feedback;
         }
 
+        clearContext();
         return returnFeedback;
     }
 
