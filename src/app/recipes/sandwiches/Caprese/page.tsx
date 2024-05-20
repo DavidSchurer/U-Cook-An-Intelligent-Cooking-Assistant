@@ -6,6 +6,11 @@ import styles from './page.module.scss';  // Ensure you have the corresponding C
 export default function Caprese() {
     const router = useRouter();
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -54,6 +59,9 @@ export default function Caprese() {
                         <li><h3>Serve</h3></li>
 
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>
