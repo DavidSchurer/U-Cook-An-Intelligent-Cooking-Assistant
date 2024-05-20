@@ -11,6 +11,11 @@ export default function MinestroneSoup() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -60,6 +65,9 @@ export default function MinestroneSoup() {
                             Season to taste and serve with parsley, red pepper flakes, and parmesan, if desired.
                         </li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>

@@ -11,6 +11,11 @@ export default function ChickenNoodleSoup() {
         router.push(`/recipes/pasta/${id}`);
     }
 
+    // Function to handle navigation back to the call screen page
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
     return (
         <>
             <main className={styles.main}>
@@ -67,6 +72,9 @@ export default function ChickenNoodleSoup() {
                             While the noodles cook, shred the chicken into strips or dice into cubes. Slide the chicken back into the pot and then taste the soup once more for seasoning. Adjust with more salt and pepper, as needed. Stir in the parsley and serve.
                         </li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>
