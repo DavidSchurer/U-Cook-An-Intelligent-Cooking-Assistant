@@ -85,7 +85,7 @@ export default function CallScreen() {
                 <ParticipantTile name="David" image="/participants/david.png" />
                 <ParticipantTile name="Ben" image="/participants/ben.png" />
                 <ParticipantTile name="Shivam" image="/participants/shivam.png" />
-                <ParticipantTile name="Harshitha" image="" />
+                <ParticipantTile name="Harshitha" image="/participants/harshitha.png" />
                 <ParticipantTile name="Selina (me)" image="/participants/selina.png" />
             </div>
             <BottomPanel />
