@@ -1,10 +1,12 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.scss';  // Ensure you have the corresponding CSS module for styles
+import { useInput } from 'compo/global/context/InputContext';
 
 export default function Carbonara() {
     const router = useRouter();
+    const { addVoiceRoute, removeVoiceRoute } = useInput();
 
     // Sample data for pasta recipes
     const pastaRecipes = [
@@ -15,6 +17,22 @@ export default function Carbonara() {
     const handleSelectRecipe = (id: string) => {
         router.push(`/recipes/pasta/${id}`);
     }
+
+    const handleCallScreenButton = () => {
+        router.push(`/call-screen`);
+    }
+
+    useEffect(() => {
+        // Add voice route for selecting this recipe
+        addVoiceRoute('call screen', 'Okay, we are back to the call screen.', handleCallScreenButton, {
+            visual: 'Return to Call Screen'
+        });
+
+        return () => {
+            // Remove voice route when component is unmounted
+            removeVoiceRoute('call screen');
+        }
+    }, []);
 
     return (
         <>
@@ -58,6 +76,9 @@ export default function Carbonara() {
                             Add the beaten eggs with cheese and toss quickly to combine once more. Add salt to taste. Add some pasta water back to the pasta to keep it from drying out.</li>
                         <li><h3>Serve:</h3>Serve at once with the rest of the parmesan and freshly ground black pepper. If you want, sprinkle with a little fresh chopped parsley.</li>
                     </ol>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <button onClick={handleCallScreenButton}><strong>Call Screen</strong></button>
                 </div>
             </div>
         </>
