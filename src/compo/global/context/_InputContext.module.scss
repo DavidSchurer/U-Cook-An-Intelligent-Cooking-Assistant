@@ -34,6 +34,10 @@
 
 }
 
+.content {
+    width: calc(100% - 120px);
+}
+
 .MicrophoneIcon{
     position: fixed;
     bottom: 20px;
@@ -100,4 +104,8 @@
     .response {
         font-weight: 400;
     }
+}
+
+.footer {
+    background-color: gray;
 }

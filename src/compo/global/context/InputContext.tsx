@@ -7,7 +7,6 @@ import microphoneImage from 'app/images/microphoneImage.png';
 import Image from 'next/image';
 
 import { convertNumbersInPhrase } from 'util/numToWorded';
-import useAudio from 'util/audio/useAudio';
 
 // Function to calculate Levenshtein distance
 function levenshtein(a, b) {
@@ -128,13 +127,19 @@ const sanitizeTranscript = (transcript: string) => {
     return convertNumbersInPhrase(transcript.toLowerCase()).replace(/[^a-zA-Z0-9 ]/g, '');
 }
 
+const playSound = (audio: any)=>{
+    if(!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+}
+
 export const InputContext = createContext<InputAPI | null>(null);
 
 export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const audioWake = useAudio('/sounds/cook_wakeup.mp3');
-    const audioFail = useAudio('/sounds/cook_fail.mp3');
-    const audioProcess = useAudio('/sounds/cook_process.mp3');
+    const audioWakeRef = useRef<HTMLAudioElement | null>(null);
+    const audioFailRef = useRef<HTMLAudioElement | null>(null);
+    const audioProcessRef = useRef<HTMLAudioElement | null>(null);
 
     const {transcript, listening, resetTranscript, browserSupportsSpeechRecognition} = useSpeechRecognition();
     
@@ -304,7 +309,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             setAssistantFeedback(false);
             setAssistantMessage([]);
             window.speechSynthesis.cancel();
-            audioWake();
+            playSound(audioWakeRef.current);
             clearTimeout(voiceTimerRef.current);
             clearTimeout(feedbackTimerRef.current);
             setCommandTranscript("");
@@ -349,7 +354,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
         voiceTimerRef.current = setTimeout(()=>{
 
             if(!assistantFeedback && extractTranscript(transcript) === ''){
-                audioFail();
+                playSound(audioFailRef.current);
                 setAssistantListening(false);
                 return;
             }
@@ -358,7 +363,7 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
             if(!assistantListening) return;
             setAssistantListening(false);
 
-            audioProcess();
+            playSound(audioProcessRef.current);
 
             setAssistantFeedback(true);
             
@@ -395,37 +400,45 @@ export const InputProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <InputContext.Provider value={api}>
+            <audio ref={audioWakeRef} src="/sounds/cook_wakeup.mp3"/>
+            <audio ref={audioFailRef} src="/sounds/cook_fail.mp3"/>
+            <audio ref={audioProcessRef} src="/sounds/cook_process.mp3"/>
             <header className={styles.header}>
                 <Image className={styles.inlineUCook} src="/ucook-inline.svg" alt="U-Cook" width={40} height={40}/>
                 <h1>
                     <strong className={styles.title}>U-COOK:</strong> <span className={styles.desc}>An Intelligent Cooking Assistant for <span className={styles.em}>U</span> to <span className={styles.em}>COOK</span></span>
                 </h1>
             </header>
-            {children}
-            <div className={styles.microphoneContainer}>
-                <div className={styles.MicrophoneIcon}>
-                    <Image src={microphoneImage} alt="Microphone Image" width={50} height={50}/>
-                </div>
-                <div className={styles.MicrophoneIconButton}>
-                    <button onClick={toggleVoiceRecognition}>
-                        Voice Recognition: {voiceToggle ? 'On' : 'Off'}
-                    </button>
-                </div>
-                <div className={`${styles.microphoneTranscript} ${assistantListening || assistantFeedback ? styles.visible : ''}`}>
-                    <div className={`${styles.prompt} ${!assistantFeedback ? styles.visible : ''}`}>
-                        <h3 className={styles.label}>How can I help:</h3>
+            <div className={styles.content}>
+                {children}
+                <div className={styles.microphoneContainer}>
+                    <div className={styles.MicrophoneIcon}>
+                        <Image src={microphoneImage} alt="Microphone Image" width={50} height={50}/>
                     </div>
-                    {commandTranscript}...
-                    <div className={`${styles.response} ${assistantFeedback ? styles.visible : ''}`}>
-                        <p>
-                            {assistantMessage.map((line,i)=>
-                                <span key={i}>{line}<br/></span>
-                            )}
-                        </p>
+                    <div className={styles.MicrophoneIconButton}>
+                        <button onClick={toggleVoiceRecognition}>
+                            Voice Recognition: {voiceToggle ? 'On' : 'Off'}
+                        </button>
+                    </div>
+                    <div className={`${styles.microphoneTranscript} ${assistantListening || assistantFeedback ? styles.visible : ''}`}>
+                        <div className={`${styles.prompt} ${!assistantFeedback ? styles.visible : ''}`}>
+                            <h3 className={styles.label}>How can I help:</h3>
+                        </div>
+                        {commandTranscript}...
+                        <div className={`${styles.response} ${assistantFeedback ? styles.visible : ''}`}>
+                            <p>
+                                {assistantMessage.map((line,i)=>
+                                    <span key={i}>{line}<br/></span>
+                                )}
+                            </p>
 
+                        </div>
                     </div>
                 </div>
             </div>
+            <footer className={styles.footer}>
+                <p className={styles.copyright}>&copy; U-Cook Organization by USURF Software Company. All rights fall under Team U-Surfers.</p>
+            </footer>
         </InputContext.Provider>
     )
 
