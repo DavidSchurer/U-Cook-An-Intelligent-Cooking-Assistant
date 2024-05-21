@@ -112,6 +112,14 @@ export function BottomPanel(){
         return () => {
             removeVoiceRoute('recipes');
             removeVoiceRoute('end call');
+
+            removeVoiceRoute('fullscreen david');
+            removeVoiceRoute('fullscreen ben');
+            removeVoiceRoute('fullscreen shivam');
+            removeVoiceRoute('fullscreen harshitha');
+            removeVoiceRoute('fullscreen selina');
+            removeVoiceRoute('scroll up');
+            removeVoiceRoute('scroll down');
         }
     }, []);
 
