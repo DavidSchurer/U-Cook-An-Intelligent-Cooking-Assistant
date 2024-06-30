@@ -20,6 +20,7 @@ using voice recognition to effortlessly browse through different recipes and coo
 
 ## Technologies Used
 - Next.js
+- HTML
 - TypeScript
 - SCSS
 - react-speech-recognition
