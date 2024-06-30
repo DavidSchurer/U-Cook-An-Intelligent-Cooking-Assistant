@@ -5,7 +5,7 @@ This application is a virtual cooking assistant that allows you to learn how to 
 using voice recognition to effortlessly browse through different recipes and cookbooks!
 
 ## Live Website
-<strong>[https://u-cook.org/]</strong>
+<strong>https://u-cook.org/</strong>
 
 ## Features
 - Integration with the react-speech-recognition React hook to allow users to fully navigate through the website using just their voice.
