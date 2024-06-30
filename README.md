@@ -5,10 +5,14 @@ This application is a virtual cooking assistant that allows you to learn how to 
 using voice recognition to effortlessly browse through different recipes and cookbooks!
 
 ## Features
-- Integration with the react-speech-recognition React hook to allow users to fully navigate through the website using just their voice. 
+- Integration with the react-speech-recognition React hook to allow users to fully navigate through the website using just their voice.
+  
 - A contacts page where a user can select one or many contacts to start a group cooking call with.
+  
 - An interactive call screen page that displays all of the users in a video meeting-like setting, where each user can collaborate and cook together on a recipe.
+  
 - Various recipe categories displayed on a recipe categories page, each accompanied with full recipes that include ingredients and instructions.
+  
 - The ability to search recipes, select them, and add them to the call screen.
 
 ## Instructions
