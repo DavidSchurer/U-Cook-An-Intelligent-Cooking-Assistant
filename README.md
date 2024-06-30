@@ -31,7 +31,7 @@ once the voice recognition is toggled on.
 icon starts flashing green it means that the user’s audio is being picked up.
 
 4) To use the voice assistant, say “Hi Cook” or “Hey Cook” and then your request. (For
-example on the starting welcome page, the user can say “Hi Cook, select continue” to
+example on the starting welcome page, the user can say “Hi Cook, Select Continue” to
 select the continue button and navigate to the next page).
 
 5) To list all of the available commands on the current page, say “Hi Cook, Help” to the
