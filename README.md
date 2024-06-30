@@ -15,6 +15,12 @@ using voice recognition to effortlessly browse through different recipes and coo
   
 - The ability to search recipes, select them, and add them to the call screen.
 
+## Technologies Used
+- Next.js
+- TypeScript
+- SCSS
+- react-speech-recognition
+
 ## Instructions
 Instructions on how to use the U-Cook: An Intelligent Cooking Assistant application:
 
