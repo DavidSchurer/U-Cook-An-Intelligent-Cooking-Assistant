@@ -5,7 +5,7 @@ This application is a virtual cooking assistant that allows you to learn how to 
 using voice recognition to effortlessly browse through different recipes and cookbooks!
 
 ## Live Website
-<strong>https://u-cook.org/</strong>
+<strong>https://u-cook-an-intelligent-cooking-assistant.vercel.app/</strong>
 
 ## Features
 - Integration with the react-speech-recognition React hook to allow users to fully navigate through the website using just their voice.
@@ -28,7 +28,7 @@ using voice recognition to effortlessly browse through different recipes and coo
 ## Instructions
 Instructions on how to use the U-Cook: An Intelligent Cooking Assistant application:
 
-1) In order to run our U-Cook prototype, the user must first access the website link at https://u-cook.org/
+1) In order to run our U-Cook prototype, the user must first access the website link at https://u-cook-an-intelligent-cooking-assistant.vercel.app/
      * The user must also have a microphone installed on their computer along with a supported browser that
        supports continuous voice recognition. Note that browsers without continuous voice recognition would
        not have the ability to constantly listen for the wakeup command.
